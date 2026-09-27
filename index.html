@@ -1,133 +1,141 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#6c63ff">
-<title>Moromi – মরমী</title>
-<style>
-*{box-sizing:border-box}
-:root{--bg:#f6f7fb;--card:#fff;--text:#1f2430;--muted:#737887;--primary:#6c63ff;--soft:#eeecff;--border:#e7e8ee}
-body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-.app{max-width:520px;margin:auto;min-height:100vh;background:var(--bg);display:flex;flex-direction:column}
-header{padding:18px 18px 12px;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5}
-.brand{display:flex;align-items:center;gap:12px}
-.avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;background:linear-gradient(135deg,#6c63ff,#c77dff);display:grid;place-items:center;color:white;font-size:24px}
-.brand h1{font-size:21px;margin:0}.brand p{font-size:12px;color:var(--muted);margin:2px 0 0}
-.lang{margin-left:auto;border:1px solid var(--border);background:white;border-radius:12px;padding:7px 9px}
-main{flex:1;padding:14px 14px 88px}
-.tab{display:none}.tab.active{display:block}
-.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:15px;margin-bottom:12px;box-shadow:0 3px 14px rgba(30,30,60,.04)}
-.welcome{background:linear-gradient(135deg,#6c63ff,#9b7cff);color:white;border:0}
-h2{font-size:19px;margin:0 0 8px}.muted{color:var(--muted);font-size:13px}
-.welcome .muted{color:#eee}
-.messages{display:flex;flex-direction:column;gap:9px;min-height:270px}
-.msg{max-width:84%;padding:10px 13px;border-radius:16px;line-height:1.45;font-size:14px;white-space:pre-wrap}
-.msg.bot{align-self:flex-start;background:var(--card);border:1px solid var(--border);border-bottom-left-radius:5px}
-.msg.user{align-self:flex-end;background:var(--primary);color:white;border-bottom-right-radius:5px}
-.chatbar{display:flex;gap:8px;position:sticky;bottom:74px;padding-top:8px;background:var(--bg)}
-.chatbar input{flex:1;border:1px solid var(--border);border-radius:14px;padding:12px 13px;font-size:14px;outline:none}
-button{border:0;border-radius:13px;padding:11px 14px;background:var(--primary);color:white;font-weight:600;cursor:pointer}
-.secondary{background:var(--soft);color:#4d47b8}.danger{background:#ffe8e8;color:#b42318}
-textarea,input[type=text],input[type=time]{width:100%;border:1px solid var(--border);border-radius:12px;padding:11px;font:inherit;outline:none}
-.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}
-.note{padding:12px;border:1px solid var(--border);border-radius:13px;margin-top:8px;background:#fafaff}
-.note small{display:block;color:var(--muted);margin-top:5px}
-.moods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.mood{background:var(--card);border:1px solid var(--border);color:var(--text);font-size:22px;padding:15px 5px}.mood span{display:block;font-size:12px;margin-top:5px}
-.bottom{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:auto;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);padding:8px 5px calc(8px + env(safe-area-inset-bottom));z-index:10}
-.nav{background:transparent;color:var(--muted);padding:7px 2px;font-size:11px}.nav.active{color:var(--primary)}
-.nav b{display:block;font-size:18px;margin-bottom:2px}
-.empty{color:var(--muted);text-align:center;padding:18px}
-.check{display:flex;align-items:center;gap:8px;font-size:13px}
-@media(min-width:700px){body{padding:20px}.app{border-radius:24px;overflow:hidden;box-shadow:0 10px 35px rgba(0,0,0,.08)}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>মরমী (Moromi) - আপনার জীবনের বিশ্বস্ত সঙ্গী</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+    
+    .chat-container { width: 100%; max-width: 480px; height: 95vh; background: #ffffff; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
+    
+    /* Header */
+    .chat-header { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; padding: 15px; text-align: center; }
+    .chat-header h2 { font-size: 1.3rem; margin-bottom: 4px; }
+    .chat-header p { font-size: 0.85rem; opacity: 0.9; }
+
+    /* Daily Reminder Widget */
+    .reminder-card { background: #eef2f5; border-left: 4px solid #2a5298; margin: 10px; padding: 10px; border-radius: 8px; font-size: 0.85rem; color: #333; display: flex; justify-content: space-between; align-items: center; }
+    .reminder-btn { background: #2a5298; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; }
+
+    /* Messages Area */
+    .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #fafafa; }
+    .message { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: 0.95rem; line-height: 1.4; word-wrap: break-word; }
+    .bot-msg { background: #e3f2fd; color: #0d47a1; align-self: flex-start; border-bottom-left-radius: 2px; }
+    .user-msg { background: #2a5298; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+
+    /* Quick Action Buttons */
+    .quick-buttons { display: flex; gap: 6px; padding: 0 10px 8px 10px; overflow-x: auto; white-space: nowrap; }
+    .quick-btn { background: #ffffff; border: 1px solid #2a5298; color: #2a5298; padding: 6px 12px; border-radius: 16px; font-size: 0.8rem; cursor: pointer; flex-shrink: 0; }
+    .quick-btn:hover { background: #2a5298; color: white; }
+
+    /* Input Area */
+    .chat-input-area { padding: 10px; background: white; border-top: 1px solid #eee; display: flex; gap: 8px; }
+    .chat-input-area input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 20px; outline: none; font-size: 0.95rem; }
+    .chat-input-area button { background: #2a5298; color: white; border: none; padding: 10px 18px; border-radius: 20px; font-size: 0.95rem; cursor: pointer; font-weight: bold; }
+    
+    /* Emergency Helpline */
+    .helpline { text-align: center; font-size: 0.75rem; padding: 6px; background: #fff3cd; color: #856404; }
+  </style>
 </head>
 <body>
-<div class="app">
-<header>
-  <div class="brand">
-    <div class="avatar">ম</div>
-    <div><h1>Moromi – মরমী</h1><p id="subtitle">AI Companion • তুমি একা নও</p></div>
-    <select class="lang" id="lang" onchange="setLang(this.value)">
-      <option value="bn">বাংলা</option><option value="en">English</option>
-    </select>
-  </div>
-</header>
 
-<main>
-<section id="chat" class="tab active">
-  <div class="card welcome"><h2 id="hello">কেমন আছো আজ? ❤️</h2><div class="muted" id="welcomeText">মনের কথা বলতে চাইলে বলো। আমি শুনছি।</div></div>
-  <div class="card"><div id="messages" class="messages"></div></div>
-  <div class="chatbar">
-    <input id="chatInput" type="text" placeholder="মনের কথা লিখো..." onkeydown="if(event.key==='Enter')sendMessage()">
-    <button onclick="sendMessage()">➤</button>
+<div class="chat-container">
+  <div class="chat-header">
+    <h2>মরমী (Moromi) 🤍</h2>
+    <p>আপনার সুখে-দুঃখে পাশে থাকা এক অবাধ্য বন্ধু</p>
   </div>
-</section>
 
-<section id="notes" class="tab">
-  <div class="card"><h2 id="notesTitle">আমার নোট</h2><p class="muted" id="notesHint">গুরুত্বপূর্ণ কথা, স্বপ্ন বা উপদেশ এখানে রাখো।</p>
-    <textarea id="noteInput" rows="4" placeholder="এখানে লিখো..."></textarea>
-    <button style="margin-top:8px" onclick="addNote()" id="saveNote">নোট সেভ</button>
+  <div class="reminder-card">
+    <span id="reminder-text">💡 "ধৈর্য ধরুন, নিশ্চয়ই কষ্টের পর স্বস্তি আসে।"</span>
+    <button class="reminder-btn" onclick="changeReminder()">নতুন উপদেশ</button>
   </div>
-  <div id="noteList"></div>
-</section>
 
-<section id="mood" class="tab">
-  <div class="card"><h2 id="moodTitle">আজ তোমার মন কেমন?</h2><p class="muted" id="moodHint">একটা বেছে নাও।</p>
-    <div class="moods">
-      <button class="mood" onclick="saveMood('sad')">😔<span id="sad">মন খারাপ</span></button>
-      <button class="mood" onclick="saveMood('ok')">🙂<span id="ok">মোটামুটি</span></button>
-      <button class="mood" onclick="saveMood('happy')">😊<span id="happy">ভালো</span></button>
+  <div class="chat-messages" id="chatMessages">
+    <div class="message bot-msg">
+      আসসালামু আলাইকুম। আমি মরমী। আপনার মনের প্রতিটি কথা শুনতে আমি প্রস্তুত। আজ আপনার দিনটি কেমন কাটছে?
     </div>
   </div>
-  <div class="card"><div id="moodResult" class="empty">তোমার mood এখানে দেখা যাবে।</div></div>
-</section>
 
-<section id="reminders" class="tab">
-  <div class="card"><h2 id="remTitle">রিমাইন্ডার</h2><p class="muted" id="remHint">নোটিফিকেশনের জন্য browser permission লাগতে পারে।</p>
-    <input id="remText" type="text" placeholder="যেমন: পরিবারের সাথে কথা বলো ❤️">
-    <div class="row" style="margin-top:8px"><input id="remTime" type="time"><button onclick="addReminder()" id="addRem">যোগ করো</button></div>
-    <button class="secondary" style="margin-top:8px;width:100%" onclick="requestNotify()" id="notifyBtn">🔔 Notification চালু করো</button>
+  <div class="quick-buttons">
+    <button class="quick-btn" onclick="sendQuick('আজ খুব একা লাগছে')">😔 খুব একা লাগছে</button>
+    <button class="quick-btn" onclick="sendQuick('জীবনযুদ্ধে বড্ড ক্লান্ত')">💔 জীবনযুদ্ধে ক্লান্ত</button>
+    <button class="quick-btn" onclick="sendQuick('আমাকে একটি সুন্দর উপদেশ দাও')">✨ সুন্দর উপদেশ</button>
+    <button class="quick-btn" onclick="sendQuick('নামাজের সময় ও গুরুত্ব বলো')">🕌 নামাজের কথা</button>
   </div>
-  <div id="remList"></div>
-</section>
-</main>
 
-<nav class="bottom">
-  <button class="nav active" onclick="showTab('chat',this)"><b>💬</b><span id="nChat">চ্যাট</span></button>
-  <button class="nav" onclick="showTab('notes',this)"><b>📝</b><span id="nNotes">নোট</span></button>
-  <button class="nav" onclick="showTab('mood',this)"><b>❤️</b><span id="nMood">মুড</span></button>
-  <button class="nav" onclick="showTab('reminders',this)"><b>🔔</b><span id="nRem">রিমাইন্ডার</span></button>
-</nav>
+  <div class="chat-input-area">
+    <input type="text" id="userInput" placeholder="আপনার মনের কথা লিখুন..." onkeypress="handleKeyPress(event)">
+    <button onclick="sendMessage()">পাঠান</button>
+  </div>
+
+  <div class="helpline">
+    জরুরি মানসিক সহায়তার জন্য কান পেতে শুনবে 'কান পেতে রই': <b>09612119911</b>
+  </div>
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
-let lang=localStorage.getItem('moromi_lang')||'bn';
-let messages=JSON.parse(localStorage.getItem('moromi_messages')||'[]');
-let notes=JSON.parse(localStorage.getItem('moromi_notes')||'[]');
-let reminders=JSON.parse(localStorage.getItem('moromi_reminders')||'[]');
+  const reminders = [
+    "💡 'ধৈর্য ধরুন, নিশ্চয়ই কষ্টের পর স্বস্তি আসে।' - আল কুরআন",
+    "🕌 পাঁচ ওয়াক্ত নামাজ মনের অশান্তি দূর করার সেরা মাধ্যম।",
+    "🌱 জীবনযুদ্ধে টিকে থাকাটাই সবচেয়ে বড় বীরত্ব। আপনি একা নন।",
+    "☕ আপনার পরিশ্রমে আপনার পরিবার সচল, নিজেকে নিয়ে গর্ব করুন।",
+    "🤲 'আল্লাহ কারো ওপর তার সাধ্যের অতিরিক্ত বোঝা চাপান না।'"
+  ];
 
-const text={
-bn:{subtitle:'AI Companion • তুমি একা নও',hello:'কেমন আছো আজ? ❤️',welcome:'মনের কথা বলতে চাইলে বলো। আমি শুনছি।',placeholder:'মনের কথা লিখো...',notes:'আমার নোট',notesHint:'গুরুত্বপূর্ণ কথা, স্বপ্ন বা উপদেশ এখানে রাখো।',notePh:'এখানে লিখো...',save:'নোট সেভ',mood:'আজ তোমার মন কেমন?',moodHint:'একটা বেছে নাও।',sad:'মন খারাপ',ok:'মোটামুটি',happy:'ভালো',rem:'রিমাইন্ডার',remHint:'নোটিফিকেশনের জন্য browser permission লাগতে পারে।',remPh:'যেমন: পরিবারের সাথে কথা বলো ❤️',add:'যোগ করো',notify:'🔔 Notification চালু করো',chat:'চ্যাট',noteNav:'নোট',moodNav:'মুড',remNav:'রিমাইন্ডার',emptyMood:'তোমার mood এখানে দেখা যাবে।',saved:'নোট সেভ হয়েছে।',thanks:'তোমার কথা শুনলাম। একটু ধীরে শ্বাস নাও। তুমি একা নও। ❤️',family:'যদি সম্ভব হয়, আজ পরিবারের কারও সঙ্গে একটু কথা বলো।',sadReply:'মন খারাপ থাকতেই পারে। নিজেকে দোষ দিও না। চাইলে আমাকে বলো কী হয়েছে। ❤️',happyReply:'তোমার ভালো লাগছে শুনে আমারও ভালো লাগছে। এই মুহূর্তটা উপভোগ করো। 😊'},
-en:{subtitle:'AI Companion • You are not alone',hello:'How are you today? ❤️',welcome:'If you want to talk, I’m listening.',placeholder:'Write what you feel...',notes:'My Notes',notesHint:'Save important thoughts, dreams or advice here.',notePh:'Write here...',save:'Save note',mood:'How are you feeling today?',moodHint:'Choose one.',sad:'Sad',ok:'Okay',happy:'Happy',rem:'Reminders',remHint:'Browser notification permission may be required.',remPh:'Example: Talk to your family ❤️',add:'Add',notify:'🔔 Enable notifications',chat:'Chat',noteNav:'Notes',moodNav:'Mood',remNav:'Reminders',emptyMood:'Your mood will appear here.',saved:'Note saved.',thanks:'I hear you. Take a slow breath. You are not alone. ❤️',family:'If you can, talk to someone you trust today.',sadReply:'It’s okay to feel sad. Don’t blame yourself. If you want, tell me what happened. ❤️',happyReply:'I’m glad you’re feeling good. Enjoy this moment. 😊'}
-};
+  function changeReminder() {
+    const randomIndex = Math.floor(Math.random() * reminders.length);
+    document.getElementById('reminder-text').innerText = reminders[randomIndex];
+  }
 
-function setLang(v){lang=v;localStorage.setItem('moromi_lang',v);applyLang()}
-function applyLang(){let t=text[lang];$('subtitle').textContent=t.subtitle;$('hello').textContent=t.hello;$('welcomeText').textContent=t.welcome;$('chatInput').placeholder=t.placeholder;$('notesTitle').textContent=t.notes;$('notesHint').textContent=t.notesHint;$('noteInput').placeholder=t.notePh;$('saveNote').textContent=t.save;$('moodTitle').textContent=t.mood;$('moodHint').textContent=t.moodHint;$('sad').textContent=t.sad;$('ok').textContent=t.ok;$('happy').textContent=t.happy;$('remTitle').textContent=t.rem;$('remHint').textContent=t.remHint;$('remText').placeholder=t.remPh;$('addRem').textContent=t.add;$('notifyBtn').textContent=t.notify;$('nChat').textContent=t.chat;$('nNotes').textContent=t.noteNav;$('nMood').textContent=t.moodNav;$('nRem').textContent=t.remNav;renderMessages();renderNotes();renderReminders()}
-function showTab(id,btn){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));btn.classList.add('active')}
-function save(){localStorage.setItem('moromi_messages',JSON.stringify(messages));localStorage.setItem('moromi_notes',JSON.stringify(notes));localStorage.setItem('moromi_reminders',JSON.stringify(reminders))}
-function renderMessages(){let box=$('messages');box.innerHTML='';if(!messages.length){addBot(text[lang].welcome,false);return}messages.forEach(m=>{let d=document.createElement('div');d.className='msg '+m.role;d.textContent=m.text;box.appendChild(d)});box.scrollTop=box.scrollHeight}
-function addBot(s,store=true){messages.push({role:'bot',text:s});if(store)save();renderMessages()}
-function sendMessage(){let v=$('chatInput').value.trim();if(!v)return;messages.push({role:'user',text:v});$('chatInput').value='';save();renderMessages();setTimeout(()=>{let low=v.toLowerCase();let reply;if(/মন খারাপ|কষ্ট|একা|depress|sad|lonely|stress/.test(low))reply=text[lang].sadReply;else if(/ভালো|খুশি|happy|good/.test(low))reply=text[lang].happyReply;else if(/পরিবার|বাবা|মা|wife|family/.test(low))reply=text[lang].family;else reply=text[lang].thanks;addBot(reply)},400)}
-function addNote(){let v=$('noteInput').value.trim();if(!v)return;notes.unshift({id:Date.now(),text:v,date:new Date().toLocaleString()});$('noteInput').value='';save();renderNotes();alert(text[lang].saved)}
-function renderNotes(){let box=$('noteList');box.innerHTML='';if(!notes.length){box.innerHTML='<div class="empty">No notes yet.</div>';return}notes.forEach(n=>{let d=document.createElement('div');d.className='card note';d.innerHTML='<div></div><small></small><button class="danger" style="margin-top:8px">Delete</button>';d.querySelector('div').textContent=n.text;d.querySelector('small').textContent=n.date;d.querySelector('button').onclick=()=>{notes=notes.filter(x=>x.id!==n.id);save();renderNotes()};box.appendChild(d)})}
-function saveMood(m){let labels={sad:text[lang].sad,ok:text[lang].ok,happy:text[lang].happy};localStorage.setItem('moromi_mood',JSON.stringify({m,date:new Date().toLocaleString()}));$('moodResult').textContent='❤️ '+labels[m]+' • '+new Date().toLocaleString()}
-function addReminder(){let txt=$('remText').value.trim(),time=$('remTime').value;if(!txt||!time)return alert(lang==='bn'?'বার্তা ও সময় দিন।':'Enter a message and time.');reminders.push({id:Date.now(),text:txt,time});$('remText').value='';save();renderReminders()}
-function renderReminders(){let box=$('remList');box.innerHTML='';if(!reminders.length){box.innerHTML='<div class="empty">No reminders yet.</div>';return}reminders.forEach(r=>{let d=document.createElement('div');d.className='card';d.innerHTML='<div><b></b><div class="muted"></div></div><button class="danger" style="margin-top:8px">Delete</button>';d.querySelector('b').textContent=r.text;d.querySelector('.muted').textContent=r.time;d.querySelector('button').onclick=()=>{reminders=reminders.filter(x=>x.id!==r.id);save();renderReminders()};box.appendChild(d)})}
-async function requestNotify(){if(!('Notification'in window)){alert('এই browser notification support করে না।');return}let p=await Notification.requestPermission();if(p==='granted')new Notification('Moromi – মরমী',{body:lang==='bn'?'আমি তোমার সঙ্গে আছি। ❤️':'I’m here with you. ❤️'});else alert(lang==='bn'?'Notification permission দেওয়া হয়নি।':'Notification permission was not granted.')}
-function checkReminders(){if(!('Notification'in window)||Notification.permission!=='granted')return;let now=new Date(),hm=now.toTimeString().slice(0,5),key=now.toDateString()+' '+hm;reminders.forEach(r=>{if(r.time===hm&&localStorage.getItem('sent_'+r.id)!==key){new Notification('Moromi – মরমী',{body:r.text});localStorage.setItem('sent_'+r.id,key)}})}
-applyLang();setInterval(checkReminders,30000);
+  async function sendMessage() {
+    const input = document.getElementById('userInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    appendMessage(text, 'user-msg');
+    input.value = '';
+
+    const botMessageDiv = appendMessage('মরমী টাইপ করছে...', 'bot-msg');
+
+    try {
+      const response = await fetch('https://moromi-ai-9ccd.vercel.app/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
+      });
+
+      const data = await response.json();
+      if (response.ok && data.reply) {
+        botMessageDiv.innerText = data.reply;
+      } else {
+        botMessageDiv.innerText = 'দুঃখিত, কোনো সমস্যা হয়েছে। আবার চেষ্টা করুন।';
+      }
+    } catch (err) {
+      botMessageDiv.innerText = 'নেটওয়ার্ক সমস্যা। আপনার ইন্টারনেট সংযোগ চেক করুন।';
+    }
+  }
+
+  function appendMessage(text, className) {
+    const container = document.getElementById('chatMessages');
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${className}`;
+    msgDiv.innerText = text;
+    container.appendChild(msgDiv);
+    container.scrollTop = container.scrollHeight;
+    return msgDiv;
+  }
+
+  function sendQuick(text) {
+    document.getElementById('userInput').value = text;
+    sendMessage();
+  }
+
+  function handleKeyPress(e) {
+    if (e.key === 'Enter') sendMessage();
+  }
 </script>
+
 </body>
 </html>
