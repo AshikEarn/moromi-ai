@@ -3,44 +3,230 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>মরমী (Moromi) - মানসিক স্বাস্থ্য সহকারী</title>
+  <title>মরমী (Moromi) - ইসলামিক ও মানসিক স্বাস্থ্য সঙ্গী</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-    body { background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
-    .chat-container { width: 100%; max-width: 480px; height: 90vh; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
-    .chat-header { background: #1a5f7a; color: #ffffff; padding: 18px; text-align: center; }
-    .chat-header h2 { font-size: 1.3rem; margin-bottom: 4px; }
-    .chat-header p { font-size: 0.85rem; opacity: 0.9; }
-    .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #fdfdfd; }
-    .message { max-width: 80%; padding: 12px 16px; border-radius: 16px; font-size: 0.95rem; line-height: 1.5; word-wrap: break-word; }
-    .user { align-self: flex-end; background-color: #1a5f7a; color: white; border-bottom-right-radius: 2px; }
-    .bot { align-self: flex-start; background-color: #e8f1f5; color: #222; border-bottom-left-radius: 2px; }
-    .chat-input-area { padding: 12px; background: #ffffff; border-top: 1px solid #eee; display: flex; gap: 8px; }
-    input { flex: 1; padding: 12px 16px; border: 1px solid #ddd; border-radius: 24px; outline: none; font-size: 0.95rem; }
-    input:focus { border-color: #1a5f7a; }
-    button { background: #1a5f7a; color: white; border: none; padding: 12px 20px; border-radius: 24px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-    button:hover { background: #13485c; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 10px;
+    }
+
+    .chat-card {
+      width: 100%;
+      max-width: 480px;
+      height: 92vh;
+      max-height: 720px;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .chat-header {
+      background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+      color: #ffffff;
+      padding: 16px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-icon {
+      width: 50px;
+      height: 50px;
+      background: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 26px;
+      margin: 0 auto 6px auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .chat-header h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .chat-header p {
+      font-size: 0.82rem;
+      opacity: 0.95;
+    }
+
+    /* উপদেশ নোটিফিকেশন ব্যানার */
+    .notification-toast {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+      border-bottom: 1px solid #ffe8a1;
+      font-weight: 500;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background-color: #f7fafc;
+      scroll-behavior: smooth;
+    }
+
+    .message {
+      max-width: 82%;
+      padding: 12px 16px;
+      border-radius: 20px;
+      font-size: 0.93rem;
+      line-height: 1.5;
+      word-wrap: break-word;
+      animation: popIn 0.25s ease-out;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+      color: #ffffff;
+      border-bottom-right-radius: 2px;
+      box-shadow: 0 4px 10px rgba(78, 84, 200, 0.2);
+    }
+
+    .bot {
+      align-self: flex-start;
+      background: #ffffff;
+      color: #2d3748;
+      border-bottom-left-radius: 2px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .chat-input-area {
+      padding: 10px 12px;
+      background: #ffffff;
+      border-top: 1px solid #edf2f7;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    input {
+      flex: 1;
+      padding: 12px 18px;
+      border: 2px solid #e2e8f0;
+      border-radius: 25px;
+      outline: none;
+      font-size: 0.92rem;
+      transition: all 0.3s;
+    }
+
+    input:focus {
+      border-color: #4e54c8;
+      box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.15);
+    }
+
+    button {
+      background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.92rem;
+      box-shadow: 0 4px 10px rgba(78, 84, 200, 0.25);
+    }
+
+    .developer-footer {
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 0.78rem;
+      text-align: center;
+      padding: 6px;
+      font-weight: 600;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="chat-container">
+  <div class="chat-card">
     <div class="chat-header">
+      <div class="avatar-icon">🕌</div>
       <h2>মরমী (Moromi)</h2>
-      <p>আপনার অনুভূতি ও মনের কথা শেয়ার করার নিরাপদ স্থান</p>
+      <p>আপনার মানসিক প্রশান্তি ও আত্মিক অনুভূতির নিরাপদ স্থান</p>
+    </div>
+
+    <!-- উপদেশ নোটিফিকেশন বার -->
+    <div class="notification-toast" id="notifyToast">
+      💡 <b>ইসলামিক বাণী:</b> "নিশ্চয়ই কষ্টের সাথেই স্বস্তি রয়েছে।" (সূরা আল-ইনশিরাহ: ৬)
     </div>
     
     <div class="chat-messages" id="chatMessages">
-      <div class="message bot">নমস্কার/আসসালামু আলাইকুম! আমি 'মরমী'। আপনার মনের যেকোনো অনুভূতি বা কষ্টের কথা নির্দ্বিধায় বলতে পারেন, আমি শুনছি...</div>
+      <div class="message bot">আসসালামু আলাইকুম! আমি 'মরমী'। আপনার মনের কষ্ট, দ্বিধা কিংবা জীবনের যেকোনো কথা নির্দ্বিধায় বলতে পারেন। মহান আল্লাহর রহমতে আমি আপনাকে মন দিয়ে শুনছি... 💚</div>
     </div>
     
     <div class="chat-input-area">
-      <input type="text" id="userInput" placeholder="আপনার কথা লিখুন..." onkeypress="if(event.key === 'Enter') sendMessage()">
+      <input type="text" id="userInput" placeholder="আপনার মনের কথা বা প্রশ্ন লিখুন..." onkeypress="if(event.key === 'Enter') sendMessage()">
       <button onclick="sendMessage()">পাঠান</button>
+    </div>
+
+    <div class="developer-footer">
+      Developed by জিমি 🤖 || আশিক
     </div>
   </div>
 
   <script>
+    // ইসলামিক উপদেশ ও নসীহত এর লিস্ট (র্যান্ডম নোটিফিকেশনের জন্য)
+    const IslamicTips = [
+      '💡 "আল্লাহ তায়ালা ধৈর্যশীলদের পছন্দ করেন।" (সূরা আল-ইমরান: ১৪৬)',
+      '🕌 "নিশ্চয়ই কষ্টের সাথেই স্বস্তি রয়েছে।" (সূরা আল-ইনশিরাহ: ৬)',
+      '🌸 "বান্দা যখন সিজদায় থাকে, তখন সে আল্লাহর সবচেয়ে নিকটে থাকে।"',
+      '✨ "মন খারাপ থাকলে বেশি বেশি ‘লা হাওলা ওয়া লা কুওয়াতা ইল্লা বিল্লাহ’ পাঠ করুন।"',
+      '📖 "যে ব্যক্তি আল্লাহর ওপর ভরসা করে, তার জন্য তিনিই যথেষ্ট।" (সূরা আত-ত্বলাক: ৩)'
+    ];
+
+    // ৪ সেকেন্ড পর প্রথম নোটিফিকেশন পপআপ হবে এবং প্রতি ৩০ সেকেন্ডে নতুন বাণী আসবে
+    setTimeout(() => {
+      showRandomTip();
+      setInterval(showRandomTip, 30000);
+    }, 4000);
+
+    function showRandomTip() {
+      const toast = document.getElementById('notifyToast');
+      const randomTip = IslamicTips[Math.floor(Math.random() * IslamicTips.length)];
+      toast.innerHTML = randomTip;
+      toast.style.display = 'block';
+    }
+
     async function sendMessage() {
       const inputField = document.getElementById('userInput');
       const text = inputField.value.trim();
@@ -49,7 +235,7 @@
       appendMessage(text, 'user');
       inputField.value = '';
 
-      const loadingMsg = appendMessage('মরমী চিন্তা করছে...', 'bot');
+      const loadingMsg = appendMessage('মরমী চিন্তা করছে... 💭', 'bot');
 
       try {
         const response = await fetch('/api/chat', {
@@ -63,7 +249,7 @@
         if (response.ok) {
           loadingMsg.innerText = data.reply || 'কোনো উত্তর পাওয়া যায়নি।';
         } else {
-          loadingMsg.innerText = 'সাময়িক সমস্যা: ' + (data.error || 'উত্তর আনা সম্ভব হয়নি।');
+          loadingMsg.innerText = data.error || 'সাময়িক সমস্যা: উত্তর আনা সম্ভব হয়নি।';
         }
       } catch (err) {
         loadingMsg.innerText = 'সার্ভারের সাথে সংযোগে ত্রুটি ঘটেছে। কিছুক্ষণ পর আবার চেষ্টা করুন।';
