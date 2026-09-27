@@ -1,53 +1,49 @@
-‎<!DOCTYPE html>
-‎<html lang="bn">
-‎<head>
-‎  <meta charset="UTF-8">
-‎  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-‎  <title>Moromi Test</title>
-‎</head>
-‎<body style="padding: 20px; font-family: sans-serif; background-color: #f9f9f9;">
-‎
-‎  <h2>মরমী এআই (Moromi AI) - সংযোগ পরীক্ষা</h2>
-‎  <p>নিচে মেসেজ লিখে পরীক্ষা করুন:</p>
-‎
-‎  <div style="margin-top: 15px;">
-‎    <input type="text" id="msg" placeholder="এখানে লিখুন..." style="padding: 10px; width: 70%; max-width: 300px; font-size: 16px;">
-‎    <button onclick="send()" style="padding: 10px 15px; font-size: 16px; cursor: pointer;">পাঠান</button>
-‎  </div>
-‎
-‎  <div id="reply" style="margin-top: 20px; padding: 15px; background: #fff; border: 1px solid #ccc; min-height: 50px; font-size: 16px;"></div>
-‎
-‎  <script>
-‎    async function send() {
-‎      const input = document.getElementById('msg').value.trim();
-‎      const replyDiv = document.getElementById('reply');
-‎
-‎      if (!input) {
-‎        replyDiv.innerText = 'দয়া করে কিছু লিখুন।';
-‎        return;
-‎      }
-‎
-‎      replyDiv.innerText = 'অপেক্ষা করুন, এআই উত্তর দিচ্ছে...';
-‎
-‎      try {
-‎        const res = await fetch('/api/chat', {
-‎          method: 'POST',
-‎          headers: { 'Content-Type': 'application/json' },
-‎          body: JSON.stringify({ message: input })
-‎        });
-‎
-‎        const data = await res.json();
-‎
-‎        if (res.ok) {
-‎          replyDiv.innerText = 'উত্তর: ' + (data.reply || 'কোনো উত্তর আসে নি');
-‎        } else {
-‎          replyDiv.innerText = 'সার্ভার এরর (Status ' + res.status + '): ' + (data.error || JSON.stringify(data));
-‎        }
-‎      } catch (e) {
-‎        replyDiv.innerText = 'কানেকশন এরর: ' + e.message;
-‎      }
-‎    }
-‎  </script>
-‎
-‎</body>
-‎</html>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moromi Connectivity Test</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #fafafa; }
+    input, button { padding: 12px; font-size: 16px; margin: 5px 0; }
+    #log { background: #111; color: #00ff00; padding: 15px; border-radius: 8px; font-family: monospace; white-space: pre-wrap; margin-top: 15px; min-height: 100px; }
+  </style>
+</head>
+<body>
+
+  <h2>মরমী টেস্ট (Moromi Direct Test)</h2>
+  <input type="text" id="msg" value="হ্যালো" style="width: 80%;"> <br>
+  <button onclick="testConnection()">পরীক্ষা করুন (Test Now)</button>
+
+  <h3>ডিবাগ আউটপুট (Debug Result):</h3>
+  <div id="log">এখানে ফলাফল আসবে...</div>
+
+  <script>
+    async function testConnection() {
+      const logDiv = document.getElementById('log');
+      const text = document.getElementById('msg').value;
+      
+      logDiv.innerText = "১. বাটন ক্লিক সফল হয়েছে...\n";
+      logDiv.innerText += "২. Vercel Server `/api/chat`-এ রিকোয়েস্ট পাঠানো হচ্ছে...\n";
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+
+        logDiv.innerText += `৩. সার্ভার থেকে রেসপন্স কোড এসেছে: ${res.status}\n`;
+
+        const data = await res.json();
+        logDiv.innerText += "৪. ডেটা রিসিভড:\n" + JSON.stringify(data, null, 2);
+
+      } catch (err) {
+        logDiv.innerText += "\n❌ ভুল/এরর ঘটেছে: " + err.message;
+      }
+    }
+  </script>
+
+</body>
+</html>
