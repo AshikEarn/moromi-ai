@@ -14,31 +14,31 @@ export default async function handler(req, res) {
   }
 
   const systemInstruction = `তুমি 'মরমী' (Moromi), একজন মমতাময়ী, সামাজিকভাবে সচেতন ও ইসলামিক দৃষ্টিভঙ্গিসম্পন্ন বাংলা মানসিক স্বাস্থ্য সহকারী। 
-তোমার কাজ হলো ব্যবহারকারীকে কেবল শোনাই নয়, তাকে পরিবারে দায়িত্বশীল হতে, আশপাশের মানুষের পাশে দাঁড়াতে, মাদক ও খারাপ কাজ থেকে দূরে থাকতে উৎসাহিত করা এবং পরম মমতায় সুন্দর উপদেশ দেওয়া।
+তোমার কাজ হলো ব্যবহারকারীকে কেবল শোনাই নয়, তাকে পরিবারে দায়িত্বশীল হতে, আশপাশের মানুষের পাশে দাঁড়াতে, মাদক ও খারাপ কাজ থেকে দূরে থাকতে উৎসাহিত করা এবং পরম মমতায় ছোট ছোট বাক্যে সুন্দর উপদেশ দেওয়া।
 জরুরি নিয়ম: তোমার প্রতিটি উত্তর অবশ্যই সম্পূর্ণ বাক্যে শেষ করবে, কোনো বাক্য যেন অর্ধেক রেখে কেটে না যায়।`;
 
-  // দ্রুতগতির অ্যান্ডপয়েন্ট এবং মডেলগুলোর লিস্ট
+  // গুগলের সঠিক ভার্সনের অফিশিয়াল মডেল অ্যান্ডপয়েন্ট
   const models = [
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
-    'https://generativelanguage.googleapis.com/v1/models/gemini-3.8-flash:generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent'
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent'
   ];
 
-  const engagingFallbackReplies = [
-    "আপনার কষ্টটা আমি বুঝতে পারছি। কখনো কি ভেবে দেখেছেন, আপনার পরিবারের মানুষগুলো আপনাকে কত ভালোবাসে? আজ বাবা-মা বা প্রিয়জনদের কোনো খোঁজ নিয়েছেন?",
-    "জীবনের কঠিন সময়ে অনেক মানুষ ভুলের বশে মাদকের দিকে ঝোঁকে। কিন্তু মাদক সমাধান নয়, বরং সবকিছু ধ্বংস করে দেয়। আজ আপনি নিজের ও পরিবারের মুখে হাসি ফোটাতে কী ভালো কাজ করতে চান?",
-    "মন খারাপ থাকলে আশপাশের কোনো অসহায় মানুষকে একটু সাহায্য করে দেখুন, দেখবেন মনটা এক নিমেষেই শান্ত ও শান্তিতে ভরে উঠবে। আপনার কাছাকাছি এমন কেউ আছে?",
-    "কখনো কখনো জীবন আমাদের খুব পরীক্ষা নেয়। কিন্তু আল্লাহ ধৈর্যশীলদের সাথে আছেন। আজ কি নিজেকে একটু সময় দিয়ে সুন্দর কিছু পরিকল্পনা করেছেন?",
-    "নিজের শরীর ও মনের খেয়াল রাখা অনেক বড় আমানত। খারাপ অভ্যাসগুলো ছেড়ে নতুনভাবে শুরু করার এখনই সঠিক সময়। আপনার কি কোনো বিষয়ে সাহায্য লাগবে?",
-    "পরিবারে নিজের ছোট ছোট দায়িত্বগুলো পালন করাও অনেক বড় শান্তির কাজ। আজকের দিনটি কেমন কাটলো বলুন তো?",
-    "যেকোনো ভুল পথ থেকে ফিরে আসার দরজা সব সময় খোলা থাকে। একটু অযু করে দুই রাকাত নামাজ পড়ে আল্লাহর কাছে সাহায্য চান, সব সহজ হয়ে যাবে।"
+  // ট্রাফিক অতিরিক্ত হাই থাকলে ডায়নামিক বৈচিত্র্যময় প্রশ্ন ও উপদেশ
+  const fallbackReplies = [
+    "আপনার কষ্টের কথা আমি বুঝতে পারছি। জীবনের এই কঠিন সময়ে পরিবারের কার কাছে মন খুলে কথা বললে আপনার একটু ভালো লাগবে বলুন তো?",
+    "কখনো কখনো জীবন পরীক্ষা নেয়। তবে মাদক বা খারাপ কোনো পথ কখনোই সমাধান দেয় না। আজ নিজের বা পরিবারের মুখে হাসি ফোটাতে কোনো পরিকল্পনা করেছেন?",
+    "মন খারাপ থাকলে আশপাশের কোনো অসহায় মানুষকে সাহায্য করার চেষ্টা করুন। অন্যের মুখে হাসি ফোটালে নিজের মনটাও এক নিমেষে শান্ত হয়ে যায়।",
+    "ধৈর্য ও প্রার্থনার শক্তি অনেক বড়। আজকের দিনে কি এমন কিছু ঘটেছে যা আপনাকে খুব ভাবাচ্ছে? চাইলে আমার সাথে শেয়ার করতে পারেন।",
+    "নিজের খেয়াল রাখা ও পরিবারের পাশে থাকা অনেক বড় এক ইবাদত। আজ কি বাবামা বা প্রিয়জনদের কোনো খোঁজ নিয়েছেন?",
+    "খারাপ লাগার মুহূর্তগুলো চিরস্থায়ী নয়। একটু অযু করে দুই রাকাত নামাজ পড়ুন, আল্লাহর কাছে মনে কথা বলুন—অনেক হালকা লাগবে।",
+    "নিজের জীবনকে গুছিয়ে তুলতে প্রতিটি নতুন দিনই একটি নতুন সুযোগ। আজকের দিনটিকে কীভাবে আরও সুন্দর করা যায় বলুন তো?",
+    "সমাজ ও পরিবারের জন্য ভালো কিছু করার প্রেরণা পাওয়ার জন্য ধনসম্পদের প্রয়োজন হয় না, শুধু একটা সুন্দর মনের প্রয়োজন হয়। আপনার দিনটি কেমন কাটছে?"
   ];
 
   for (const baseUrl of models) {
     try {
       const controller = new AbortController();
-      // রেসপন্স টাইম ৬ সেকেন্ড করা হয়েছে অনলাইন উত্তর বেশি পাওয়ার জন্য
-      const timeoutId = setTimeout(() => controller.abort(), 6000); 
+      const timeoutId = setTimeout(() => controller.abort(), 7000); // ৭ সেকেন্ড ব্যাকএন্ড ওয়েট
 
       const url = `${baseUrl}?key=${apiKey}`;
       const response = await fetch(url, {
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
           systemInstruction: { parts: [{ text: systemInstruction }] },
           contents: [{ role: 'user', parts: [{ text: message }] }],
           generationConfig: { 
-            temperature: 0.7, 
+            temperature: 0.8, 
             maxOutputTokens: 800 
           }
         })
@@ -62,10 +62,11 @@ export default async function handler(req, res) {
         return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
       }
     } catch (err) {
-      console.error('Model timed-out or failed, switching...', err);
+      console.error('API Error or Timeout, trying next model...', err);
     }
   }
 
-  const randomReply = engagingFallbackReplies[Math.floor(Math.random() * engagingFallbackReplies.length)];
-  return res.status(200).json({ reply: randomReply });
+  // র্যান্ডমলি একেকবার একেক প্রশ্ন নির্বাচন
+  const randomIndex = Math.floor(Math.random() * fallbackReplies.length);
+  return res.status(200).json({ reply: fallbackReplies[randomIndex] });
 }
