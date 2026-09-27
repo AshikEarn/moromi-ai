@@ -10,17 +10,24 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    const response = await fetch("https://api.openai.com/v1/responses", {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-5.6-mini",
-        instructions:
-          "You are Moromi, a warm and supportive AI companion. You are clearly an AI, not a human. Understand Bangla, Banglish, and English. If the user writes Banglish, understand it and reply naturally in Bangla. Keep replies simple, friendly and helpful.",
-        input: message,
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: "You are Moromi, a warm and supportive AI companion. You are clearly an AI, not a human. Understand Bangla, Banglish, and English. If the user writes Banglish, understand it and reply naturally in Bangla. Keep replies simple, friendly and helpful."
+          },
+          {
+            role: "user",
+            content: message
+          }
+        ],
       }),
     });
 
@@ -33,7 +40,7 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({
-      reply: data.output_text || "দুঃখিত, এখন উত্তর দিতে পারছি না।",
+      reply: data.choices[0]?.message?.content || "দুঃখিত, এখন উত্তর দিতে পারছি না।",
     });
   } catch (error) {
     return res.status(500).json({
