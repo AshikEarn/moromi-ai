@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>মরমী (Moromi) - ইসলামিক ও মানসিক স্বাস্থ্য সঙ্গী</title>
+  <title>মরমী (Moromi) - সামাজিক ও মানসিক স্বাস্থ্য সঙ্গী</title>
   <style>
     * {
       box-sizing: border-box;
@@ -71,14 +71,14 @@
     .notification-toast {
       background: #fff3cd;
       color: #856404;
-      border: 1px solid #ffeeba;
+      border-bottom: 1px solid #ffe8a1;
       padding: 10px 14px;
       font-size: 0.85rem;
       text-align: center;
       display: none;
       animation: fadeIn 0.5s ease-in-out;
-      border-bottom: 1px solid #ffe8a1;
       font-weight: 500;
+      line-height: 1.4;
     }
 
     .chat-messages {
@@ -180,18 +180,18 @@
 
   <div class="chat-card">
     <div class="chat-header">
-      <div class="avatar-icon">🕌</div>
+      <div class="avatar-icon">🌸</div>
       <h2>মরমী (Moromi)</h2>
-      <p>আপনার মানসিক প্রশান্তি ও আত্মিক অনুভূতির নিরাপদ স্থান</p>
+      <p>আপনার মানসিক প্রশান্তি, পরিবার ও জীবনের পথের সাথী</p>
     </div>
 
     <!-- উপদেশ নোটিফিকেশন বার -->
     <div class="notification-toast" id="notifyToast">
-      💡 <b>ইসলামিক বাণী:</b> "নিশ্চয়ই কষ্টের সাথেই স্বস্তি রয়েছে।" (সূরা আল-ইনশিরাহ: ৬)
+      💡 <b>উপদেশ:</b> "পরিবারের মুখে হাসি ফোটাতে নিজের সেরাটা দিন। ভালোবাসাই পৃথিবীর সবচেয়ে বড় শক্তি।"
     </div>
     
     <div class="chat-messages" id="chatMessages">
-      <div class="message bot">আসসালামু আলাইকুম! আমি 'মরমী'। আপনার মনের কষ্ট, দ্বিধা কিংবা জীবনের যেকোনো কথা নির্দ্বিধায় বলতে পারেন। মহান আল্লাহর রহমতে আমি আপনাকে মন দিয়ে শুনছি... 💚</div>
+      <div class="message bot">আসসালামু আলাইকুম! আমি 'মরমী'। জীবনযুদ্ধে কখনো হতাশ হবেন না। আপনার মনের কথা, হতাশা কিংবা যেকোনো দ্বিধা আমার সাথে শেয়ার করতে পারেন। আমি শুনছি... 💚</div>
     </div>
     
     <div class="chat-input-area">
@@ -205,24 +205,25 @@
   </div>
 
   <script>
-    // ইসলামিক উপদেশ ও নসীহত এর লিস্ট (র্যান্ডম নোটিফিকেশনের জন্য)
-    const IslamicTips = [
-      '💡 "আল্লাহ তায়ালা ধৈর্যশীলদের পছন্দ করেন।" (সূরা আল-ইমরান: ১৪৬)',
-      '🕌 "নিশ্চয়ই কষ্টের সাথেই স্বস্তি রয়েছে।" (সূরা আল-ইনশিরাহ: ৬)',
-      '🌸 "বান্দা যখন সিজদায় থাকে, তখন সে আল্লাহর সবচেয়ে নিকটে থাকে।"',
-      '✨ "মন খারাপ থাকলে বেশি বেশি ‘লা হাওলা ওয়া লা কুওয়াতা ইল্লা বিল্লাহ’ পাঠ করুন।"',
-      '📖 "যে ব্যক্তি আল্লাহর ওপর ভরসা করে, তার জন্য তিনিই যথেষ্ট।" (সূরা আত-ত্বলাক: ৩)'
+    // জীবনমুখী, পারিবারিক, সামাজিক ও মাদকমুক্ত থাকার উপদেশ লিস্ট
+    const UsefulTips = [
+      '🚫 <b>মাদকমুক্ত জীবন:</b> "মাদক সাময়িক স্বস্তি দিলেও জীবন, পরিবার ও ভবিষ্যৎকে ধূলিসাৎ করে দেয়। যেকোনো নেশাকে ‘না’ বলুন।"',
+      '👨‍👩‍👧‍👦 <b>পরিবারের যত্ন:</b> "বাবা-মায়ের একটি মিষ্টি হাসি আপনার সব মানসিক ক্লান্তি দূর করে দিতে পারে। তাঁদের সময় দিন।"',
+      '🤝 <b>মানুষের পাশে দাঁড়ান:</b> "আপনার সামর্থ্যের ছোট সাহায্যটিই হয়তো অন্য কোনো মানুষের বেঁচে থাকার একমাত্র সম্বল।"',
+      '📖 <b>ইসলামিক বাণী:</b> "নিশ্চয়ই কষ্টের সাথেই স্বস্তি রয়েছে।" (সূরা আল-ইনশিরাহ: ৬)',
+      '🌱 <b>আত্মউন্নয়ন:</b> "অতীত নিয়ে আক্ষেপ না করে আজকের দিনটিতে নিজেকে ১% উন্নত করার চেষ্টা করুন।"',
+      '❤️ <b>মানবিকতা:</b> "আশপাশের অবহেলিত মানুষের খবর রাখুন। হাসিমুখে কথা বলাও একটি বড় দান (সাদাকাহ)।"',
+      '✨ <b>মানসিক প্রশান্তি:</b> "হতাশা আসলে অযু করে দুই রাকাত নামাজ পড়ুন এবং পরিবারের সাথে খোলামেলা কথা বলুন।"'
     ];
 
-    // ৪ সেকেন্ড পর প্রথম নোটিফিকেশন পপআপ হবে এবং প্রতি ৩০ সেকেন্ডে নতুন বাণী আসবে
     setTimeout(() => {
       showRandomTip();
-      setInterval(showRandomTip, 30000);
-    }, 4000);
+      setInterval(showRandomTip, 25000);
+    }, 3000);
 
     function showRandomTip() {
       const toast = document.getElementById('notifyToast');
-      const randomTip = IslamicTips[Math.floor(Math.random() * IslamicTips.length)];
+      const randomTip = UsefulTips[Math.floor(Math.random() * UsefulTips.length)];
       toast.innerHTML = randomTip;
       toast.style.display = 'block';
     }
@@ -235,7 +236,7 @@
       appendMessage(text, 'user');
       inputField.value = '';
 
-      const loadingMsg = appendMessage('মরমী চিন্তা করছে... 💭', 'bot');
+      const loadingMsg = appendMessage('মরমী ভাবছে... 💭', 'bot');
 
       try {
         const response = await fetch('/api/chat', {
