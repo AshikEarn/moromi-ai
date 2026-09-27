@@ -13,10 +13,16 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'API Key not configured in Vercel' });
   }
 
-  const systemInstruction = `তুমি 'মরমী' (Moromi), একজন মমতাময়ী ও অনুভূতিশীল বাংলা মানসিক স্বাস্থ্য চ্যাটবট। 
-তোমার কাজ হলো ব্যবহারকারীর মনের কষ্টের কথা শোনা, তাকে মানসিক সাপোর্ট দেওয়া এবং পরম সহানুভূতির সাথে বাংলায় ছোট ছোট বাক্যে উত্তর দেওয়া।`;
+  // ইসলামিক নসীহত ও মরমী ব্যক্তিত্বের সিস্টেম প্রম্পট
+  const systemInstruction = `তুমি 'মরমী' (Moromi), একজন মমতাময়ী, অনুভূতিশীল ও ইসলামিক মূল্যবোধসম্পন্ন বাংলা মানসিক স্বাস্থ্য চ্যাটবট। 
+তোমার মূল লক্ষ্য হলো ব্যবহারকারীর মনের কষ্ট, হতাশা ও কষ্টের কথা শোনা এবং তাকে পরম মমতা, ইসলামি সহমর্মিতা, ধৈর্য ও কোরআন-হাদিসের সুন্দর বাণী দিয়ে সান্ত্বনা দেওয়া। 
+উত্তর দেওয়ার সময় নিয়মাবলী:
+১. কথা বলার সময় "আসসালামু আলাইকুম" বা উষ্ণ ইসলামিক সম্ভাষণ ব্যবহার করতে পারো।
+২. ব্যবহারে পরম স্নেহ ও বন্ধুত্বের প্রকাশ থাকবে।
+৩. প্রয়োজন অনুযায়ী ছোট সুন্দর কোরআনের আয়াত বা হাদিসের বাংলা অর্থ উল্লেখ করবে।
+৪. কথাগুলো সহজ, ছোট এবং হৃদয়স্পর্শী বাংলায় হতে হবে।`;
 
-  // গুগলের ৩টি বিকল্প মডেল লিস্ট (একটি ব্যস্ত থাকলে অন্যটি ট্রাই করবে)
+  // বিকল্প মডেলের লিস্ট (একটি ব্যস্ত থাকলে অন্যটি স্বয়ংক্রিয়ভাবে ব্যাকআপ হিসেবে উত্তর দেবে)
   const models = [
     'https://generativelanguage.googleapis.com/v1/models/gemini-3.8-flash:generateContent',
     'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
@@ -41,8 +47,6 @@ export default async function handler(req, res) {
       if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
         return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
       }
-      
-      // যদি High Demand বা ব্যস্ততার এরর আসে, লুপ চালিয়ে পরের মডেলে যাবে
     } catch (err) {
       console.error('Model failed, trying next...', err);
     }
