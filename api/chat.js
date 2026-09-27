@@ -13,19 +13,19 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'API Key not configured in Vercel' });
   }
 
-  // ইসলামিক, পরিবার, সমাজসেবা ও মাদকমুক্ত জীবনের প্রম্পট
   const systemInstruction = `তুমি 'মরমী' (Moromi), একজন মমতাময়ী, সামাজিকভাবে সচেতন ও ইসলামিক দৃষ্টিভঙ্গিসম্পন্ন বাংলা মানসিক স্বাস্থ্য সহকারী। 
-তোমার কাজ হলো ব্যবহারকারীকে কেবল শোনাই নয়, তাকে পরিবারে দায়িত্বশীল হতে, আশপাশের মানুষের পাশে দাঁড়াতে, মাদক ও খারাপ কাজ থেকে দূরে থাকতে উৎসাহিত করা এবং পরম মমতায় ছোট ছোট বাক্যে সুন্দর উপদেশ দেওয়া।`;
+তোমার কাজ হলো ব্যবহারকারীকে কেবল শোনাই নয়, তাকে পরিবারে দায়িত্বশীল হতে, আশপাশের মানুষের পাশে দাঁড়াতে, মাদক ও খারাপ কাজ থেকে দূরে থাকতে উৎসাহিত করা এবং পরম মমতায় সুন্দর উপদেশ দেওয়া।
+জরুরি নিয়ম: তোমার প্রতিটি উত্তর অবশ্যই সম্পূর্ণ বাক্যে শেষ করবে, কোনো বাক্য যেন অর্ধেক রেখে কেটে না যায়।`;
 
+  // দ্রুতগতির অ্যান্ডপয়েন্ট এবং মডেলগুলোর লিস্ট
   const models = [
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
     'https://generativelanguage.googleapis.com/v1/models/gemini-3.8-flash:generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent'
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent'
   ];
 
-  // প্রচুর জীবনমুখী, পারিবারিক ও মাদকমুক্ত সমাজ গড়ার প্রশ্ন ও উপদেশ (ট্রাফিক হাই হলে এগুলো আসবে)
   const engagingFallbackReplies = [
-    "আপনার কষ্টটা আমি বুঝতে পারছি। কখনো কি ভেবে দেখেছেন, আপনার পরিবারের মানুষগুলো আপনাকে কত ভালোবাসে? আজ বাবামা বা প্রিয়জনদের কোনো খোঁজ নিয়েছেন?",
+    "আপনার কষ্টটা আমি বুঝতে পারছি। কখনো কি ভেবে দেখেছেন, আপনার পরিবারের মানুষগুলো আপনাকে কত ভালোবাসে? আজ বাবা-মা বা প্রিয়জনদের কোনো খোঁজ নিয়েছেন?",
     "জীবনের কঠিন সময়ে অনেক মানুষ ভুলের বশে মাদকের দিকে ঝোঁকে। কিন্তু মাদক সমাধান নয়, বরং সবকিছু ধ্বংস করে দেয়। আজ আপনি নিজের ও পরিবারের মুখে হাসি ফোটাতে কী ভালো কাজ করতে চান?",
     "মন খারাপ থাকলে আশপাশের কোনো অসহায় মানুষকে একটু সাহায্য করে দেখুন, দেখবেন মনটা এক নিমেষেই শান্ত ও শান্তিতে ভরে উঠবে। আপনার কাছাকাছি এমন কেউ আছে?",
     "কখনো কখনো জীবন আমাদের খুব পরীক্ষা নেয়। কিন্তু আল্লাহ ধৈর্যশীলদের সাথে আছেন। আজ কি নিজেকে একটু সময় দিয়ে সুন্দর কিছু পরিকল্পনা করেছেন?",
@@ -37,7 +37,8 @@ export default async function handler(req, res) {
   for (const baseUrl of models) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 4000); // ফাস্ট রেসপন্স timeout
+      // রেসপন্স টাইম ৬ সেকেন্ড করা হয়েছে অনলাইন উত্তর বেশি পাওয়ার জন্য
+      const timeoutId = setTimeout(() => controller.abort(), 6000); 
 
       const url = `${baseUrl}?key=${apiKey}`;
       const response = await fetch(url, {
@@ -47,7 +48,10 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: systemInstruction }] },
           contents: [{ role: 'user', parts: [{ text: message }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 350 }
+          generationConfig: { 
+            temperature: 0.7, 
+            maxOutputTokens: 800 
+          }
         })
       });
       clearTimeout(timeoutId);
@@ -62,7 +66,6 @@ export default async function handler(req, res) {
     }
   }
 
-  // এপিআই সাড়া না দিলে এখান থেকে চমৎকার জীবনমুখী কথা ও প্রশ্ন র্যান্ডমলি বেছে নেবে
   const randomReply = engagingFallbackReplies[Math.floor(Math.random() * engagingFallbackReplies.length)];
   return res.status(200).json({ reply: randomReply });
 }
