@@ -13,34 +13,44 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'API Key not configured in Vercel' });
   }
 
-  // ইসলামিক নসীহত ও মরমী ব্যক্তিত্বের সিস্টেম প্রম্পট
-  const systemInstruction = `তুমি 'মরমী' (Moromi), একজন মমতাময়ী, অনুভূতিশীল ও ইসলামিক মূল্যবোধসম্পন্ন বাংলা মানসিক স্বাস্থ্য চ্যাটবট। 
-তোমার মূল লক্ষ্য হলো ব্যবহারকারীর মনের কষ্ট, হতাশা ও কষ্টের কথা শোনা এবং তাকে পরম মমতা, ইসলামি সহমর্মিতা, ধৈর্য ও কোরআন-হাদিসের সুন্দর বাণী দিয়ে সান্ত্বনা দেওয়া। 
-উত্তর দেওয়ার সময় নিয়মাবলী:
-১. কথা বলার সময় "আসসালামু আলাইকুম" বা উষ্ণ ইসলামিক সম্ভাষণ ব্যবহার করতে পারো।
-২. ব্যবহারে পরম স্নেহ ও বন্ধুত্বের প্রকাশ থাকবে।
-৩. প্রয়োজন অনুযায়ী ছোট সুন্দর কোরআনের আয়াত বা হাদিসের বাংলা অর্থ উল্লেখ করবে।
-৪. কথাগুলো সহজ, ছোট এবং হৃদয়স্পর্শী বাংলায় হতে হবে।`;
+  // ইসলামিক, পরিবার, সমাজসেবা ও মাদকমুক্ত জীবনের প্রম্পট
+  const systemInstruction = `তুমি 'মরমী' (Moromi), একজন মমতাময়ী, সামাজিকভাবে সচেতন ও ইসলামিক দৃষ্টিভঙ্গিসম্পন্ন বাংলা মানসিক স্বাস্থ্য সহকারী। 
+তোমার কাজ হলো ব্যবহারকারীকে কেবল শোনাই নয়, তাকে পরিবারে দায়িত্বশীল হতে, আশপাশের মানুষের পাশে দাঁড়াতে, মাদক ও খারাপ কাজ থেকে দূরে থাকতে উৎসাহিত করা এবং পরম মমতায় ছোট ছোট বাক্যে সুন্দর উপদেশ দেওয়া।`;
 
-  // বিকল্প মডেলের লিস্ট (একটি ব্যস্ত থাকলে অন্যটি স্বয়ংক্রিয়ভাবে ব্যাকআপ হিসেবে উত্তর দেবে)
   const models = [
     'https://generativelanguage.googleapis.com/v1/models/gemini-3.8-flash:generateContent',
     'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
     'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent'
   ];
 
+  // প্রচুর জীবনমুখী, পারিবারিক ও মাদকমুক্ত সমাজ গড়ার প্রশ্ন ও উপদেশ (ট্রাফিক হাই হলে এগুলো আসবে)
+  const engagingFallbackReplies = [
+    "আপনার কষ্টটা আমি বুঝতে পারছি। কখনো কি ভেবে দেখেছেন, আপনার পরিবারের মানুষগুলো আপনাকে কত ভালোবাসে? আজ বাবামা বা প্রিয়জনদের কোনো খোঁজ নিয়েছেন?",
+    "জীবনের কঠিন সময়ে অনেক মানুষ ভুলের বশে মাদকের দিকে ঝোঁকে। কিন্তু মাদক সমাধান নয়, বরং সবকিছু ধ্বংস করে দেয়। আজ আপনি নিজের ও পরিবারের মুখে হাসি ফোটাতে কী ভালো কাজ করতে চান?",
+    "মন খারাপ থাকলে আশপাশের কোনো অসহায় মানুষকে একটু সাহায্য করে দেখুন, দেখবেন মনটা এক নিমেষেই শান্ত ও শান্তিতে ভরে উঠবে। আপনার কাছাকাছি এমন কেউ আছে?",
+    "কখনো কখনো জীবন আমাদের খুব পরীক্ষা নেয়। কিন্তু আল্লাহ ধৈর্যশীলদের সাথে আছেন। আজ কি নিজেকে একটু সময় দিয়ে সুন্দর কিছু পরিকল্পনা করেছেন?",
+    "নিজের শরীর ও মনের খেয়াল রাখা অনেক বড় আমানত। খারাপ অভ্যাসগুলো ছেড়ে নতুনভাবে শুরু করার এখনই সঠিক সময়। আপনার কি কোনো বিষয়ে সাহায্য লাগবে?",
+    "পরিবারে নিজের ছোট ছোট দায়িত্বগুলো পালন করাও অনেক বড় শান্তির কাজ। আজকের দিনটি কেমন কাটলো বলুন তো?",
+    "যেকোনো ভুল পথ থেকে ফিরে আসার দরজা সব সময় খোলা থাকে। একটু অযু করে দুই রাকাত নামাজ পড়ে আল্লাহর কাছে সাহায্য চান, সব সহজ হয়ে যাবে।"
+  ];
+
   for (const baseUrl of models) {
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4000); // ফাস্ট রেসপন্স timeout
+
       const url = `${baseUrl}?key=${apiKey}`;
       const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: systemInstruction }] },
           contents: [{ role: 'user', parts: [{ text: message }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 500 }
+          generationConfig: { temperature: 0.7, maxOutputTokens: 350 }
         })
       });
+      clearTimeout(timeoutId);
 
       const data = await response.json();
 
@@ -48,11 +58,11 @@ export default async function handler(req, res) {
         return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
       }
     } catch (err) {
-      console.error('Model failed, trying next...', err);
+      console.error('Model timed-out or failed, switching...', err);
     }
   }
 
-  return res.status(503).json({ 
-    error: 'মরমী এই মুহূর্তে একটু ব্যস্ত আছে, অনুগ্রহ করে কয়েক সেকেন্ড পর আবার বার্তা দিন।' 
-  });
+  // এপিআই সাড়া না দিলে এখান থেকে চমৎকার জীবনমুখী কথা ও প্রশ্ন র্যান্ডমলি বেছে নেবে
+  const randomReply = engagingFallbackReplies[Math.floor(Math.random() * engagingFallbackReplies.length)];
+  return res.status(200).json({ reply: randomReply });
 }
