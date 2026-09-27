@@ -17,8 +17,8 @@ export default async function handler(req, res) {
 তোমার কাজ হলো ব্যবহারকারীর মনের কষ্টের কথা শোনা, তাকে মানসিক সাপোর্ট দেওয়া এবং পরম সহানুভূতির সাথে বাংলায় ছোট ছোট বাক্যে উত্তর দেওয়া।`;
 
   try {
-    // gemini-2.0-flash মডেলটি ফ্রি টিয়ারে সবচেয়ে দ্রুত ও স্টেবল রেসপন্স দেয়
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    // v1 Endpoint with gemini-3.8-flash
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -43,9 +43,6 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      if (response.status === 429) {
-        return res.status(429).json({ error: 'গুগল সার্ভারে চাপ বেশি থাকায় একটু দেরি হচ্ছে। অনুগ্রহ করে কয়েক সেকেন্ড পর আবার পাঠান।' });
-      }
       return res.status(response.status).json({ 
         error: data.error?.message || 'Gemini API Error occurred' 
       });
