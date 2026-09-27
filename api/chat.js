@@ -14,29 +14,34 @@ export default async function handler(req, res) {
   }
 
   const systemInstruction = `তুমি 'মরমী' (Moromi), একজন মমতাময়ী, সামাজিকভাবে সচেতন ও ইসলামিক দৃষ্টিভঙ্গিসম্পন্ন বাংলা মানসিক স্বাস্থ্য সহকারী। 
-তোমার কাজ হলো ব্যবহারকারী যা বলবে বা প্রশ্ন করবে সেটির যথাযথ ও সঠিক উত্তর দেওয়া। পাশাপাশি তাকে পরিবারে দায়িত্বশীল হতে, আশপাশের মানুষের পাশে দাঁড়াতে, মাদক ও খারাপ কাজ থেকে দূরে থাকতে উৎসাহিত করা এবং পরম মমতায় ছোট ছোট বাক্যে সুন্দর উপদেশ দেওয়া।
-জরুরি নিয়ম: 
-১. ব্যবহারকারীর প্রশ্নের সরাসরি ও প্রাসঙ্গিক উত্তর আগে দেবে।
-২. তোমার প্রতিটি উত্তর অবশ্যই সম্পূর্ণ বাক্যে শেষ করবে, কোনো বাক্য যেন অর্ধেক রেখে কেটে না যায়।`;
+তোমার কাজ হলো ব্যবহারকারীকে কেবল শোনাই নয়, তাকে পরিবারে দায়িত্বশীল হতে, আশপাশের মানুষের পাশে দাঁড়াতে, মাদক ও খারাপ কাজ থেকে দূরে থাকতে উৎসাহিত করা এবং পরম মমতায় সুন্দর উপদেশ দেওয়া।
+জরুরি নিয়ম: তোমার প্রতিটি উত্তর অবশ্যই সম্পূর্ণ বাক্যে শেষ করবে, কোনো বাক্য যেন অর্ধেক রেখে কেটে না যায়।`;
 
-  // গুগলের সঠিক রানিং এপিআই অ্যান্ডপয়েন্ট
   const models = [
+    'https://generativelanguage.googleapis.com/v1/models/gemini-3.8-flash:generateContent',
     'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
     'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent'
   ];
 
-  // ব্যাকআপ উপদেশ ও প্রশ্নাবলি (কেবল চরম বিপদে)
-  const fallbackReplies = [
-    "আমি আপনার অনুভূতিটা বুঝতে পারছি। আপনার কথাগুলো শুনছি, আরও বিস্তারিত বলবেন কি?",
-    "জীবনের এই সময়ে পরিবারের সাথে কথা বলা বা কাছের মানুষের পাশে থাকা আপনাকে অনেক স্বস্তি দিতে পারে। আপনার পরিবারে কে সবচেয়ে কাছের?",
-    "মন খারাপ বা অনিশ্চয়তায় থাকলে এক গ্লাস পানি খেয়ে একটু বিশ্রাম নিন। আল্লাহ ধৈর্যশীলদের ভালোবাসেন।",
-    "নিজের খেয়াল রাখা ও অসৎ পথ (যেমন মাদক বা হতাশা) থেকে দূরে থাকা অনেক বড় সফলতা। আজকের দিনটি কীভাবে কাটানোর ইচ্ছা?"
+  // বিভিন্ন ধরণের ভিন্ন ভিন্ন সুন্দর অফলাইন রেসপন্স
+  const engagingFallbackReplies = [
+    "আপনার কষ্টটা আমি বুঝতে পারছি। কখনো কি ভেবে দেখেছেন, আপনার পরিবারের মানুষগুলো আপনাকে কত ভালোবাসে? আজ বাবা-মা বা প্রিয়জনদের কোনো খোঁজ নিয়েছেন?",
+    "জীবনের কঠিন সময়ে অনেক মানুষ ভুলের বশে মাদকের দিকে ঝোঁকে। কিন্তু মাদক সমাধান নয়, বরং সবকিছু ধ্বংস করে দেয়। আজ আপনি নিজের ও পরিবারের মুখে হাসি ফোটাতে কী ভালো কাজ করতে চান?",
+    "মন খারাপ থাকলে আশপাশের কোনো অসহায় মানুষকে একটু সাহায্য করে দেখুন, দেখবেন মনটা এক নিমেষেই শান্ত ও শান্তিতে ভরে উঠবে। আপনার কাছাকাছি এমন কেউ আছে?",
+    "কখনো কখনো জীবন আমাদের খুব পরীক্ষা নেয়। কিন্তু আল্লাহ ধৈর্যশীলদের সাথে আছেন। আজ কি নিজেকে একটু সময় দিয়ে সুন্দর কিছু পরিকল্পনা করেছেন?",
+    "নিজের শরীর ও মনের খেয়াল রাখা অনেক বড় আমানত। খারাপ অভ্যাসগুলো ছেড়ে নতুনভাবে শুরু করার এখনই সঠিক সময়। আপনার কি কোনো বিষয়ে সাহায্য লাগবে?",
+    "পরিবারে নিজের ছোট ছোট দায়িত্বগুলো পালন করাও অনেক বড় শান্তির কাজ। আজকের দিনটি কেমন কাটলো বলুন তো?",
+    "যেকোনো ভুল পথ থেকে ফিরে আসার দরজা সব সময় খোলা থাকে। একটু অযু করে দুই রাকাত নামাজ পড়ে আল্লাহর কাছে সাহায্য চান, সব সহজ হয়ে যাবে।",
+    "আপনার কথাগুলো আমি মনোযোগ দিয়ে অনুধাবন করছি। নিজের প্রতি ভরসা রাখুন, ভালো দিন অবশ্যই আসবে। আজ কি আপনার প্রিয় কোনো কাজ করেছেন?",
+    "জীবন খুব সুন্দর, যদি আমরা পজিটিভ উপায়ে চিন্তা করি। হতাশ না হয়ে সামনের দিকে এগিয়ে চলুন। আপনার মনের অনুভূতিগুলো আমার সাথে শেয়ার করতে পারেন।",
+    "কখনো একা অনুভব করবেন না। সৃষ্টিকর্তা সব সময় আমাদের সাথে আছেন। আজকের এই সময়ে আপনি সবচেয়ে বেশি কার কথা ভাবছেন?"
   ];
 
   for (const baseUrl of models) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000); // ৮ সেকেন্ড সময় দেওয়া হলো অনলাইন এআই নিশ্চিত পাওয়ার জন্য
+      // টাইমআউট ৮ সেকেন্ড রাখা হয়েছে অনলাইন এআই দ্রুত পাওয়ার জন্য
+      const timeoutId = setTimeout(() => controller.abort(), 8000); 
 
       const url = `${baseUrl}?key=${apiKey}`;
       const response = await fetch(url, {
@@ -44,17 +49,11 @@ export default async function handler(req, res) {
         headers: { 'Content-Type': 'application/json' },
         signal: controller.signal,
         body: JSON.stringify({
-          contents: [
-            {
-              role: 'user',
-              parts: [
-                { text: `${systemInstruction}\n\nUser Question: ${message}` }
-              ]
-            }
-          ],
+          systemInstruction: { parts: [{ text: systemInstruction }] },
+          contents: [{ role: 'user', parts: [{ text: message }] }],
           generationConfig: { 
             temperature: 0.7, 
-            maxOutputTokens: 1000 
+            maxOutputTokens: 800 
           }
         })
       });
@@ -66,11 +65,11 @@ export default async function handler(req, res) {
         return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
       }
     } catch (err) {
-      console.error('API Error or Timeout, trying next model...', err);
+      console.error('Model timed-out or failed, switching...', err);
     }
   }
 
-  // যদি গুগল এপিআই কোনো কারণে ফেইল করে
-  const randomIndex = Math.floor(Math.random() * fallbackReplies.length);
-  return res.status(200).json({ reply: fallbackReplies[randomIndex] });
+  // র্যান্ডমলি একেকবার একেক ধরনের ভিন্ন অফলাইন উপদেশ দেবে
+  const randomReply = engagingFallbackReplies[Math.floor(Math.random() * engagingFallbackReplies.length)];
+  return res.status(200).json({ reply: randomReply });
 }
