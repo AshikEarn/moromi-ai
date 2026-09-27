@@ -17,8 +17,8 @@ export default async function handler(req, res) {
 তোমার কাজ হলো ব্যবহারকারীর মনের কষ্টের কথা শোনা, তাকে মানসিক সাপোর্ট দেওয়া এবং পরম সহানুভূতির সাথে বাংলায় ছোট ছোট বাক্যে উত্তর দেওয়া।`;
 
   try {
-    // v1 API Endpoint with gemini-2.5-flash
-    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    // gemini-3.8-flash মডেল ব্যবহার করা হয়েছে
+    const url = `https://generativelanguage.googleapis.com/v1/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
       method: 'POST',
