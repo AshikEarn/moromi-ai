@@ -37,7 +37,7 @@ export default async function handler(req, res) {
   for (const baseUrl of models) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 9000); // ৯ সেকেন্ড সময় ওয়েট করবে
+      const timeoutId = setTimeout(() => controller.abort(), 9000); // ৯ সেকেন্ড সময় দেওয়া হলো অনলাইন এআই নিশ্চিত পাওয়ার জন্য
 
       const url = `${baseUrl}?key=${apiKey}`;
       const response = await fetch(url, {
