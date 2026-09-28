@@ -17,8 +17,8 @@ export default async function handler(req, res) {
 তোমার কাজ হলো ব্যবহারকারী যা বলবে সেটির সরাসরি উত্তর দেওয়া এবং তাকে পরিবারে দায়িত্বশীল হতে ও মাদক থেকে দূরে থাকতে উৎসাহিত করা।
 জরুরি নিয়ম: তোমার প্রতিটি উত্তর অবশ্যই সম্পূর্ণ বাক্যে শেষ করবে।`;
 
-  // গুগলের সঠিক এপিআই অ্যান্ডপয়েন্ট
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  // গুগলের v1 স্ট্যাবল অ্যান্ডপয়েন্ট (যা সব এপিআই কী-তে কাজ করে)
+  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
   try {
     const controller = new AbortController();
