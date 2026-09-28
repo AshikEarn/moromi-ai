@@ -109,6 +109,7 @@
             text-align: center;
             border-bottom: 1px solid #fde68a;
             font-weight: 500;
+            transition: opacity 0.5s ease-in-out;
         }
 
         /* Chat Messages Area */
@@ -250,15 +251,31 @@
         const userInput = document.getElementById('userInput');
         const chatMessages = document.getElementById('chatMessages');
         const typingIndicator = document.getElementById('typingIndicator');
+        const quoteBanner = document.getElementById('quoteBanner');
 
         const quotes = [
             '✨ "নিশ্চয়ই কষ্টের সাথেই স্বস্তি রয়েছে।" (সূরা আল-ইনশিরাহ: ৬)',
             '💡 "আল্লাহ তাআলা ধৈর্যশীলদের পছন্দ করেন।" (সূরা আল-ইমরান: ১৪৬)',
-            '🌸 "মন খারাপ থাকলে বেশি বেশি \'লা হাওলা ওয়া লা কুওয়াতা ইল্লা বিল্লাহ\' পাঠ করুন।"'
+            '🌸 "মন খারাপ থাকলে বেশি বেশি \'লা হাওলা ওয়া লা কুওয়াতা ইল্লা বিল্লাহ\' পাঠ করুন।"',
+            '🌿 "আল্লাহ কাউকে তার সাধ্যের বাইরে কষ্ট দেন না।" (সূরা আল-বাকারা: ২৮৬)',
+            '💙 "নিশ্চই আল্লাহর স্মরণেই অন্তর প্রশান্তি লাভ করে।" (সূরা আর-রাদ: ২৮)'
         ];
 
-        // Random Quote Change
-        document.getElementById('quoteBanner').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+        // Function to change quote randomly with a smooth effect
+        function changeQuote() {
+            quoteBanner.style.opacity = 0;
+            setTimeout(() => {
+                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                quoteBanner.innerText = randomQuote;
+                quoteBanner.style.opacity = 1;
+            }, 300);
+        }
+
+        // প্রথমে একবার কল হবে
+        changeQuote();
+
+        // প্রতি ৩ সেকেন্ড পর পর (3000 milliseconds) অটোমেটিক পরিবর্তন হবে
+        setInterval(changeQuote, 3000);
 
         chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
