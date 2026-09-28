@@ -11,6 +11,17 @@
     <meta property="og:image" content="logo.png">
     <meta property="og:type" content="website">
 
+    <!-- OneSignal Push Notification SDK -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "2a4f8144-0fea-4f85-bdad-1ffbaddfbd2b",
+        });
+      });
+    </script>
+
     <style>
         * {
             box-sizing: border-box;
