@@ -17,8 +17,8 @@ export default async function handler(req, res) {
 তোমার কাজ হলো ব্যবহারকারী যা বলবে সেটির সরাসরি উত্তর দেওয়া এবং তাকে পরিবারে দায়িত্বশীল হতে ও মাদক থেকে দূরে থাকতে উৎসাহিত করা।
 জরুরি নিয়ম: তোমার প্রতিটি উত্তর অবশ্যই সম্পূর্ণ বাক্যে শেষ করবে।`;
 
-  // গুগলের বর্তমানে সক্রিয় সঠিক জেমিনাই ফ্ল্যাশ মডেল এন্ডপয়েন্ট
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  // গুগলের রিকমেন্ড করা লেটেস্ট জেমিনাই মডেল এন্ডপয়েন্ট
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
 
   try {
     const controller = new AbortController();
