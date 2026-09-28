@@ -17,41 +17,53 @@ export default async function handler(req, res) {
 তোমার কাজ হলো ব্যবহারকারী যা বলবে সেটির সরাসরি উত্তর দেওয়া এবং তাকে পরিবারে দায়িত্বশীল হতে ও মাদক থেকে দূরে থাকতে উৎসাহিত করা।
 জরুরি নিয়ম: তোমার প্রতিটি উত্তর অবশ্যই সম্পূর্ণ বাক্যে শেষ করবে।`;
 
-  // গুগলের v1 স্ট্যাবল অ্যান্ডপয়েন্ট (যা সব এপিআই কী-তে কাজ করে)
-  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+  // গুগলের বর্তমানে সক্রিয় ও গ্রহণযোগ্য সকল মডেলের তালিকা
+  const availableModels = [
+    'gemini-2.0-flash',
+    'gemini-1.5-flash-latest',
+    'gemini-1.5-pro-latest',
+    'gemini-1.5-flash-8b'
+  ];
 
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 12000);
+  let lastError = '';
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      signal: controller.signal,
-      body: JSON.stringify({
-        contents: [
-          {
-            role: 'user',
-            parts: [{ text: `${systemPrompt}\n\nইউজারের বার্তা: ${message}` }]
+  for (const model of availableModels) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+        body: JSON.stringify({
+          contents: [
+            {
+              role: 'user',
+              parts: [{ text: `${systemPrompt}\n\nইউজারের বার্তা: ${message}` }]
+            }
+          ],
+          generationConfig: { 
+            temperature: 0.7, 
+            maxOutputTokens: 800 
           }
-        ],
-        generationConfig: { 
-          temperature: 0.7, 
-          maxOutputTokens: 800 
-        }
-      })
-    });
-    clearTimeout(timeoutId);
+        })
+      });
+      clearTimeout(timeoutId);
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
-      return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
-    } else {
-      const errMsg = data.error?.message || JSON.stringify(data);
-      return res.status(200).json({ reply: `API ERROR: ${errMsg}` });
+      if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
+        return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
+      } else {
+        lastError = data.error?.message || JSON.stringify(data);
+      }
+    } catch (err) {
+      lastError = err.message;
     }
-  } catch (err) {
-    return res.status(200).json({ reply: `FETCH ERROR: ${err.message}` });
   }
+
+  return res.status(200).json({ reply: `API ERROR: ${lastError}` });
 }
