@@ -13,23 +13,28 @@ export default async function handler(req, res) {
     return res.status(500).json({ reply: 'ERROR: Vercel-এ GEMINI_API_KEY সেট করা নেই।' });
   }
 
-  const systemInstruction = `তুমি 'মরমী' (Moromi), একজন মমতাময়ী, সামাজিকভাবে সচেতন ও ইসলামিক দৃষ্টিভঙ্গিসম্পন্ন বাংলা মানসিক স্বাস্থ্য সহকারী। 
+  const systemPrompt = `তুমি 'মরমী' (Moromi), একজন মমতাময়ী, সামাজিকভাবে সচেতন ও ইসলামিক দৃষ্টিভঙ্গিসম্পন্ন বাংলা মানসিক স্বাস্থ্য সহকারী। 
 তোমার কাজ হলো ব্যবহারকারী যা বলবে সেটির সরাসরি উত্তর দেওয়া এবং তাকে পরিবারে দায়িত্বশীল হতে ও মাদক থেকে দূরে থাকতে উৎসাহিত করা।
 জরুরি নিয়ম: তোমার প্রতিটি উত্তর অবশ্যই সম্পূর্ণ বাক্যে শেষ করবে।`;
 
+  // গুগলের সঠিক এপিআই অ্যান্ডপয়েন্ট
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 12000); // ১২ সেকেন্ড সময় দেওয়া হলো
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
 
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       signal: controller.signal,
       body: JSON.stringify({
-        systemInstruction: { parts: [{ text: systemInstruction }] },
-        contents: [{ role: 'user', parts: [{ text: message }] }],
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: `${systemPrompt}\n\nইউজারের বার্তা: ${message}` }]
+          }
+        ],
         generationConfig: { 
           temperature: 0.7, 
           maxOutputTokens: 800 
@@ -43,7 +48,6 @@ export default async function handler(req, res) {
     if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
       return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
     } else {
-      // যদি এপিআই গুগলের পক্ষ থেকে এরর পাঠায়
       const errMsg = data.error?.message || JSON.stringify(data);
       return res.status(200).json({ reply: `API ERROR: ${errMsg}` });
     }
