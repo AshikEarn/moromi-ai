@@ -2,42 +2,61 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>মরমী (Moromi) - মানসিক প্রশান্তি ও আত্মিক অনুভূতি</title>
-    <link rel="manifest" href="/manifest.json">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>মরমী (Moromi) - ফ্রি মানবিক সহায়ক</title>
+
+    <meta name="description"
+          content="মরমী একটি ফ্রি বাংলা সহায়ক AI-style bot, যা জীবনের বিভিন্ন বিষয়ে সচেতনতা, নৈতিকতা ও ইতিবাচক পরামর্শ দেয়।">
+
     <meta name="theme-color" content="#6c63ff">
 
-    <!-- Open Graph Meta Tags for Social Sharing -->
-    <meta property="og:title" content="মরমী (Moromi) - AI Companion">
-    <meta property="og:description" content="আপনার মানসিক প্রশান্তি ও আত্মিক অনুভূতির নিরাপদ স্থান।">
-    <meta property="og:image" content="logo.png">
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="মরমী (Moromi)">
+    <meta property="og:description"
+          content="মানুষের উপকারের জন্য একটি ফ্রি মানবিক সহায়ক।">
+    <meta property="og:image" content="/logo.png">
     <meta property="og:type" content="website">
 
-    <!-- OneSignal Push Notification SDK -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <!-- OneSignal -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
+            defer></script>
+
     <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "2a4f8144-0fea-4f85-bdad-1ffbaddfbd2b",
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+
+        OneSignalDeferred.push(async function(OneSignal) {
+            await OneSignal.init({
+                appId: "2a4f8144-0fea-4f85-bdad-1ffbaddfbd2b"
+            });
         });
-      });
     </script>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family:
+                "Noto Sans Bengali",
+                "Segoe UI",
+                Tahoma,
+                Arial,
+                sans-serif;
         }
 
         body {
-            background-color: #f0f4f9;
+            background: #eef1f7;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
         }
 
         .chat-container {
@@ -47,421 +66,1368 @@
             background: #ffffff;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
             position: relative;
         }
 
         @media (min-width: 481px) {
+
             .chat-container {
-                height: 90vh;
-                border-radius: 20px;
-                overflow: hidden;
+                height: 92vh;
+                border-radius: 22px;
+                box-shadow:
+                    0 10px 40px rgba(0,0,0,0.12);
             }
         }
 
-        /* Header Styling */
+        /* ================= HEADER ================= */
+
         .chat-header {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #8b5cf6
+                );
+
             color: white;
-            padding: 16px;
+
+            padding: 17px 16px 15px;
+
             text-align: center;
+
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
             position: relative;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.12);
         }
 
         .user-greeting {
+
             position: absolute;
+
             top: 12px;
-            right: 16px;
+            right: 12px;
+
             font-size: 12px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 4px 10px;
-            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,0.18);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.25);
+
+            padding:
+                6px 10px;
+
+            border-radius: 20px;
+
             cursor: pointer;
+
+            max-width: 120px;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         .logo-container {
-            width: 60px;
-            height: 60px;
-            margin-bottom: 6px;
+
+            width: 64px;
+            height: 64px;
+
             border-radius: 50%;
-            background: #ffffff;
+
+            background: white;
+
             padding: 3px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+            margin-bottom: 7px;
+
+            box-shadow:
+                0 5px 15px
+                rgba(0,0,0,0.18);
+
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .logo-img {
+
             width: 100%;
             height: 100%;
+
             border-radius: 50%;
+
             object-fit: cover;
         }
 
         .chat-header h1 {
-            font-size: 18px;
+
+            font-size: 20px;
+
             font-weight: 700;
+
+            margin-bottom: 2px;
         }
 
         .chat-header p {
+
             font-size: 11px;
-            opacity: 0.9;
-            margin-top: 2px;
+
+            opacity: 0.92;
+
+            line-height: 1.5;
+
+            max-width: 280px;
         }
 
-        /* Quote Banner */
-        .quote-banner {
-            background-color: #fef3c7;
-            color: #92400e;
-            padding: 10px 14px;
-            font-size: 13px;
-            text-align: center;
-            border-bottom: 1px solid #fde68a;
-            font-weight: 500;
-            transition: opacity 0.5s ease-in-out;
-            min-height: 45px;
+        /* ================= STATUS ================= */
+
+        .status-line {
+
+            margin-top: 6px;
+
+            font-size: 10px;
+
+            opacity: 0.95;
+
             display: flex;
+
             align-items: center;
-            justify-content: center;
+
+            gap: 5px;
         }
 
-        /* Chat Messages Area */
-        .chat-messages {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
+        .status-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #86efac;
+        }
+
+        /* ================= QUOTE ================= */
+
+        .quote-banner {
+
+            background: #fff7df;
+
+            color: #8a5a00;
+
+            min-height: 48px;
+
+            padding:
+                9px 14px;
+
             display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+            border-bottom:
+                1px solid #f5df9b;
+
+            transition:
+                opacity 0.4s ease;
+        }
+
+        /* ================= CHAT ================= */
+
+        .chat-messages {
+
+            flex: 1;
+
+            padding:
+                15px;
+
+            overflow-y: auto;
+
+            display: flex;
+
             flex-direction: column;
-            gap: 12px;
-            background-color: #fafafa;
+
+            gap: 10px;
+
+            background:
+                #f8fafc;
+
+            scroll-behavior: smooth;
         }
 
         .message {
-            max-width: 80%;
-            padding: 12px 16px;
+
+            max-width: 84%;
+
+            padding:
+                11px 14px;
+
             border-radius: 18px;
+
             font-size: 14px;
-            line-height: 1.5;
-            word-wrap: break-word;
+
+            line-height: 1.65;
+
+            word-break: break-word;
+
             white-space: pre-wrap;
+
+            animation:
+                messageIn 0.2s ease;
+        }
+
+        @keyframes messageIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .user-message {
+
             align-self: flex-end;
-            background-color: #6366f1;
+
             color: white;
-            border-bottom-right-radius: 4px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #7c3aed
+                );
+
+            border-bottom-right-radius:
+                5px;
+
+            box-shadow:
+                0 3px 8px
+                rgba(99,102,241,0.18);
         }
 
         .bot-message {
+
             align-self: flex-start;
-            background-color: #ffffff;
+
             color: #1f2937;
-            border-bottom-left-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e5e7eb;
+
+            background: white;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-bottom-left-radius:
+                5px;
+
+            box-shadow:
+                0 2px 6px
+                rgba(0,0,0,0.04);
+        }
+
+        .bot-label {
+
+            font-size: 10px;
+
+            color: #6366f1;
+
+            font-weight: 700;
+
+            margin-bottom: 4px;
         }
 
         .typing-indicator {
+
             display: none;
+
             align-self: flex-start;
-            background-color: #e5e7eb;
-            padding: 8px 16px;
-            border-radius: 18px;
-            font-size: 13px;
+
+            background: #e5e7eb;
+
             color: #6b7280;
+
+            padding:
+                8px 13px;
+
+            border-radius: 18px;
+
+            font-size: 12px;
         }
 
-        /* Input Area */
-        .chat-input-area {
-            padding: 12px 16px;
+        /* ================= QUICK QUESTIONS ================= */
+
+        .quick-area {
+
+            padding:
+                7px 10px 4px;
+
             background: #ffffff;
-            border-top: 1px solid #e5e7eb;
+
             display: flex;
-            gap: 8px;
+
+            gap: 6px;
+
+            overflow-x: auto;
+        }
+
+        .quick-btn {
+
+            flex: 0 0 auto;
+
+            border:
+                1px solid #ddd6fe;
+
+            background:
+                #f5f3ff;
+
+            color:
+                #5b21b6;
+
+            padding:
+                6px 10px;
+
+            border-radius: 18px;
+
+            font-size: 11px;
+
+            cursor: pointer;
+
+            white-space: nowrap;
+        }
+
+        .quick-btn:active {
+
+            transform: scale(0.97);
+        }
+
+        /* ================= INPUT ================= */
+
+        .chat-input-area {
+
+            padding:
+                9px 11px;
+
+            background:
+                #ffffff;
+
+            border-top:
+                1px solid #e5e7eb;
+
+            display: flex;
+
+            gap: 7px;
+
             align-items: center;
         }
 
         .chat-input {
+
             flex: 1;
-            padding: 12px 16px;
-            border: 1px solid #d1d5db;
+
+            min-width: 0;
+
+            padding:
+                11px 14px;
+
+            border:
+                1px solid #d1d5db;
+
             border-radius: 24px;
+
             outline: none;
+
             font-size: 14px;
-            transition: border-color 0.2s;
+
+            background: #ffffff;
         }
 
         .chat-input:focus {
-            border-color: #6366f1;
+
+            border-color:
+                #6366f1;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(99,102,241,0.08);
         }
 
         .send-btn {
-            background: #6366f1;
-            color: white;
+
             border: none;
-            padding: 12px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #7c3aed
+                );
+
+            color: white;
+
+            padding:
+                11px 16px;
+
             border-radius: 24px;
-            font-weight: 600;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
             cursor: pointer;
-            transition: background 0.2s;
+
+            white-space: nowrap;
         }
 
-        .send-btn:hover {
-            background: #4f46e5;
+        .send-btn:active {
+
+            transform: scale(0.96);
         }
+
+        .send-btn:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+        }
+
+        /* ================= FOOTER ================= */
 
         .footer-credits {
+
             text-align: center;
-            padding: 8px;
-            font-size: 11px;
-            color: #6b7280;
-            background: #f9fafb;
-            border-top: 1px solid #f3f4f6;
+
+            padding:
+                6px;
+
+            font-size: 9px;
+
+            color: #9ca3af;
+
+            background:
+                #ffffff;
         }
 
-        /* Name Modal Styling */
+        /* ================= NAME MODAL ================= */
+
         .modal-overlay {
+
             position: fixed;
-            top: 0;
-            left: 0;
+
+            inset: 0;
+
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+
+            background:
+                rgba(15,23,42,0.68);
+
             display: flex;
+
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+
+            z-index: 9999;
+
+            padding: 20px;
         }
 
         .modal-box {
-            background: white;
-            padding: 24px;
-            border-radius: 16px;
-            width: 90%;
+
+            width: 100%;
             max-width: 360px;
+
+            background: white;
+
+            padding: 25px 22px;
+
+            border-radius: 20px;
+
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+            box-shadow:
+                0 20px 50px
+                rgba(0,0,0,0.25);
+        }
+
+        .modal-icon {
+
+            font-size: 35px;
+
+            margin-bottom: 5px;
         }
 
         .modal-box h2 {
-            font-size: 20px;
+
             color: #1f2937;
-            margin-bottom: 8px;
+
+            font-size: 20px;
+
+            margin-bottom: 7px;
         }
 
         .modal-box p {
-            font-size: 13px;
+
             color: #6b7280;
-            margin-bottom: 16px;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+            margin-bottom: 15px;
         }
 
         .modal-input {
+
             width: 100%;
+
             padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
+
+            border:
+                1px solid #d1d5db;
+
+            border-radius: 10px;
+
             outline: none;
-            font-size: 14px;
-            margin-bottom: 16px;
+
             text-align: center;
+
+            font-size: 14px;
+
+            margin-bottom: 12px;
+        }
+
+        .modal-input:focus {
+
+            border-color:
+                #6366f1;
         }
 
         .modal-btn {
+
             width: 100%;
-            background: #6366f1;
-            color: white;
+
             border: none;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #7c3aed
+                );
+
+            color: white;
+
             padding: 12px;
-            border-radius: 8px;
-            font-weight: 600;
+
+            border-radius: 10px;
+
+            font-weight: 700;
+
             cursor: pointer;
         }
+
+        /* ================= SCROLLBAR ================= */
+
+        ::-webkit-scrollbar {
+
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+
+            background:
+                #cbd5e1;
+
+            border-radius: 10px;
+        }
+
     </style>
 </head>
+
 <body>
 
-    <!-- Name Input Modal (First time entry) -->
-    <div class="modal-overlay" id="nameModal" style="display: none;">
+    <!-- ================= NAME MODAL ================= -->
+
+    <div
+        class="modal-overlay"
+        id="nameModal"
+        style="display:none;"
+    >
+
         <div class="modal-box">
-            <h2>স্বাগতম 'মরমী'-তে 🌸</h2>
-            <p>আপনার সুন্দর নামটি এখানে লিখুন যাতে আমি আপনাকে চিনতে পারি:</p>
-            <input type="text" class="modal-input" id="userNameInput" placeholder="আপনার নাম (যেমন: আশিক)" autocomplete="off">
-            <button class="modal-btn" id="saveNameBtn">প্রবেশ করুন</button>
+
+            <div class="modal-icon">🌸</div>
+
+            <h2>স্বাগতম মরমীতে</h2>
+
+            <p>
+                আপনার নামটি লিখুন।
+                মরমী এই নাম ব্যবহার করে
+                আপনাকে স্বাগত জানাবে।
+            </p>
+
+            <input
+                type="text"
+                class="modal-input"
+                id="userNameInput"
+                placeholder="আপনার নাম"
+                autocomplete="off"
+                maxlength="30"
+            >
+
+            <button
+                class="modal-btn"
+                id="saveNameBtn"
+            >
+                মরমীতে প্রবেশ করুন
+            </button>
+
         </div>
+
     </div>
+
+
+    <!-- ================= MAIN APP ================= -->
 
     <div class="chat-container">
-        <!-- Header with Logo & Greeting -->
+
+        <!-- HEADER -->
+
         <div class="chat-header">
-            <div class="user-greeting" id="userGreeting" title="নাম পরিবর্তন করতে ক্লিক করুন">👤 নাম</div>
+
+            <div
+                class="user-greeting"
+                id="userGreeting"
+                title="নাম পরিবর্তন করতে ক্লিক করুন"
+            >
+                👤 নাম
+            </div>
+
             <div class="logo-container">
-                <img src="logo.png" alt="Moromi Logo" class="logo-img">
+
+                <img
+                    src="/logo.png"
+                    alt="Moromi Logo"
+                    class="logo-img"
+                >
+
             </div>
+
             <h1>মরমী (Moromi)</h1>
-            <p>আপনার মানসিক প্রশান্তি ও আত্মিক অনুভূতির নিরাপদ স্থান</p>
-        </div>
 
-        <!-- Quote Banner -->
-        <div class="quote-banner" id="quoteBanner">
-            ✨ "নিশ্চয়ই কষ্টের সাথেই স্বস্তি রয়েছে।" (সূরা আল-ইনশিরাহ: ৬)
-        </div>
+            <p>
+                মানুষের উপকারের জন্য একটি
+                ফ্রি মানবিক সহায়ক
+            </p>
 
-        <!-- Messages Area -->
-        <div class="chat-messages" id="chatMessages">
-            <div class="message bot-message" id="welcomeMessage">
-                আসসালামু আলাইকুম! আমি 'মরমী'। আপনার মনের যেকোনো অনুভূতি, কষ্ট বা কথা শেয়ার করতে পারেন। আমি সবসময় আপনার পাশে আছি।
+            <div class="status-line">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    ফ্রি Offline Bot
+                </span>
+
             </div>
-            <div class="typing-indicator" id="typingIndicator">
+
+        </div>
+
+
+        <!-- QUOTE -->
+
+        <div
+            class="quote-banner"
+            id="quoteBanner"
+        >
+            🌿 ভালো থাকার পথ শুরু হয়
+            একটি ভালো সিদ্ধান্ত থেকে।
+        </div>
+
+
+        <!-- CHAT -->
+
+        <div
+            class="chat-messages"
+            id="chatMessages"
+        >
+
+            <div
+                class="message bot-message"
+                id="welcomeMessage"
+            >
+
+                <div class="bot-label">
+                    🤖 মরমী
+                </div>
+
+                আসসালামু আলাইকুম! 🌸
+
+                আমি মরমী—একটি ফ্রি
+                মানবিক সহায়ক বট।
+
+                আপনি আপনার প্রশ্ন,
+                চিন্তা, কষ্ট বা জীবনের
+                যেকোনো বিষয় নিয়ে কথা
+                বলতে পারেন।
+
+                আমি সহজ ভাষায়
+                উত্তর দেওয়ার চেষ্টা করব।
+            </div>
+
+
+            <div
+                class="typing-indicator"
+                id="typingIndicator"
+            >
                 মরমী লিখছে...
             </div>
+
         </div>
 
-        <!-- Input Form -->
-        <form class="chat-input-area" id="chatForm">
-            <input type="text" class="chat-input" id="userInput" placeholder="আপনার মনের কথা বা প্রশ্ন লিখুন..." required autocomplete="off">
-            <button type="submit" class="send-btn">পাঠান</button>
+
+        <!-- QUICK QUESTIONS -->
+
+        <div class="quick-area">
+
+            <button
+                class="quick-btn"
+                data-question="আমার মন খারাপ, কী করতে পারি?"
+            >
+                😔 মন খারাপ
+            </button>
+
+            <button
+                class="quick-btn"
+                data-question="মাদক থেকে কীভাবে দূরে থাকব?"
+            >
+                🚫 মাদক
+            </button>
+
+            <button
+                class="quick-btn"
+                data-question="বেটিং বা জুয়া কীভাবে ছাড়ব?"
+            >
+                🎯 বেটিং
+            </button>
+
+            <button
+                class="quick-btn"
+                data-question="আল্লাহর কাছে ফিরে আসতে চাই, কী করব?"
+            >
+                🌙 ইসলাম
+            </button>
+
+            <button
+                class="quick-btn"
+                data-question="জীবনে ভালো কিছু করতে চাই, কোথা থেকে শুরু করব?"
+            >
+                🌱 জীবন
+            </button>
+
+        </div>
+
+
+        <!-- INPUT -->
+
+        <form
+            class="chat-input-area"
+            id="chatForm"
+        >
+
+            <input
+                type="text"
+                class="chat-input"
+                id="userInput"
+                placeholder="আপনার মনের কথা বা প্রশ্ন লিখুন..."
+                autocomplete="off"
+                required
+            >
+
+            <button
+                type="submit"
+                class="send-btn"
+                id="sendBtn"
+            >
+                পাঠান
+            </button>
+
         </form>
 
+
         <div class="footer-credits">
-            Developed by জিমি 🤖 || আশিক
+
+            🤖 মরমী একটি AI-style Offline Bot
+            • মানুষের উপকারের উদ্দেশ্যে ❤️
+
         </div>
+
     </div>
 
+
+    <!-- ================= JAVASCRIPT ================= -->
+
     <script>
-        const chatForm = document.getElementById('chatForm');
-        const userInput = document.getElementById('userInput');
-        const chatMessages = document.getElementById('chatMessages');
-        const typingIndicator = document.getElementById('typingIndicator');
-        const quoteBanner = document.getElementById('quoteBanner');
-        
-        const nameModal = document.getElementById('nameModal');
-        const userNameInput = document.getElementById('userNameInput');
-        const saveNameBtn = document.getElementById('saveNameBtn');
-        const userGreeting = document.getElementById('userGreeting');
-        const welcomeMessage = document.getElementById('welcomeMessage');
 
-        // Check if user name exists in localStorage
-        let userName = localStorage.getItem('moromi_user_name');
+        /* -----------------------------------------
+           ELEMENTS
+        ----------------------------------------- */
 
-        window.addEventListener('DOMContentLoaded', () => {
-            if (!userName) {
-                nameModal.style.display = 'flex';
-            } else {
-                updateGreetingAndWelcome();
-            }
-        });
+        const chatForm =
+            document.getElementById("chatForm");
 
-        // Save User Name
-        saveNameBtn.addEventListener('click', () => {
-            const name = userNameInput.value.trim();
-            if (name) {
-                localStorage.setItem('moromi_user_name', name);
-                userName = name;
-                nameModal.style.display = 'none';
-                updateGreetingAndWelcome();
-            }
-        });
+        const userInput =
+            document.getElementById("userInput");
 
-        // Allow pressing Enter in modal
-        userNameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                saveNameBtn.click();
-            }
-        });
+        const chatMessages =
+            document.getElementById("chatMessages");
 
-        // Update greeting and bot welcome message with user name
+        const typingIndicator =
+            document.getElementById("typingIndicator");
+
+        const quoteBanner =
+            document.getElementById("quoteBanner");
+
+        const sendBtn =
+            document.getElementById("sendBtn");
+
+        const nameModal =
+            document.getElementById("nameModal");
+
+        const userNameInput =
+            document.getElementById("userNameInput");
+
+        const saveNameBtn =
+            document.getElementById("saveNameBtn");
+
+        const userGreeting =
+            document.getElementById("userGreeting");
+
+        const welcomeMessage =
+            document.getElementById("welcomeMessage");
+
+
+        /* -----------------------------------------
+           USER NAME
+        ----------------------------------------- */
+
+        let userName =
+            localStorage.getItem(
+                "moromi_user_name"
+            );
+
+
         function updateGreetingAndWelcome() {
-            userGreeting.innerText = `👤 ${userName}`;
-            welcomeMessage.innerText = `আসসালামু আলাইকুম ${userName}! আমি 'মরমী'। আপনার মনের যেকোনো অনুভূতি, কষ্ট বা কথা শেয়ার করতে পারেন। আমি সবসময় আপনার পাশে আছি।`;
+
+            if (!userName) return;
+
+            userGreeting.innerText =
+                `👤 ${userName}`;
+
+            welcomeMessage.innerHTML = `
+                <div class="bot-label">
+                    🤖 মরমী
+                </div>
+
+                আসসালামু আলাইকুম ${escapeHtml(userName)}! 🌸
+
+                আমি মরমী—একটি ফ্রি
+                মানবিক সহায়ক বট।
+
+                আপনার মনের কথা,
+                প্রশ্ন বা সমস্যার কথা
+                বলতে পারেন।
+            `;
         }
 
-        // Allow changing name by clicking on the greeting badge
-        userGreeting.addEventListener('click', () => {
-            userNameInput.value = userName;
-            nameModal.style.display = 'flex';
-        });
 
-        // Quotes list
+        function openNameModal() {
+
+            userNameInput.value =
+                userName || "";
+
+            nameModal.style.display =
+                "flex";
+
+            setTimeout(() => {
+
+                userNameInput.focus();
+
+            }, 100);
+
+        }
+
+
+        function saveUserName() {
+
+            const name =
+                userNameInput.value.trim();
+
+            if (!name) {
+
+                userNameInput.focus();
+
+                return;
+            }
+
+            userName = name;
+
+            localStorage.setItem(
+                "moromi_user_name",
+                userName
+            );
+
+            nameModal.style.display =
+                "none";
+
+            updateGreetingAndWelcome();
+        }
+
+
+        saveNameBtn.addEventListener(
+            "click",
+            saveUserName
+        );
+
+
+        userNameInput.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    event.preventDefault();
+
+                    saveUserName();
+                }
+
+            }
+        );
+
+
+        userGreeting.addEventListener(
+            "click",
+            openNameModal
+        );
+
+
+        window.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                if (!userName) {
+
+                    openNameModal();
+
+                } else {
+
+                    updateGreetingAndWelcome();
+
+                }
+
+            }
+        );
+
+
+        /* -----------------------------------------
+           SAFE HTML
+        ----------------------------------------- */
+
+        function escapeHtml(text) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent =
+                text;
+
+            return div.innerHTML;
+        }
+
+
+        /* -----------------------------------------
+           QUOTES
+        ----------------------------------------- */
+
         const quotes = [
-            '✨ "নিশ্চয়ই কষ্টের সাথেই স্বস্তি রয়েছে।" (সূরা আল-ইনশিরাহ: ৬)',
-            '💡 "আল্লাহ তাআলা ধৈর্যশীলদের পছন্দ করেন।" (সূরা আল-ইমরান: ১৪৬)',
-            '🌸 "মন খারাপ থাকলে বেশি বেশি \'লা হাওলা ওয়া লা কুওয়াতা ইল্লা বিল্লাহ\' পাঠ করুন।"',
-            '🌿 "আল্লাহ কাউকে তার সাধ্যের বাইরে কষ্ট দেন না।" (সূরা আল-বাকারা: ২৮৬)',
-            '💙 "নিশ্চই আল্লাহর স্মরণেই অন্তর প্রশান্তি লাভ করে।" (সূরা আর-রাদ: ২৮)',
-            '🤝 "একটি সুন্দর সমাজ গঠনে পারস্পরিক শ্রদ্ধাবোধ, সততা এবং মানবিক মূল্যবোধই আমাদের সবচেয়ে বড় শক্তি।"',
-            '🏛️ "রাষ্ট্রের উন্নয়ন কেবল অবকাঠামোতে নয়, বরং নাগরিকদের আদর্শিক উন্নত মানসিকতার ওপর নির্ভর করে।"',
-            '🚫 "মাদক আর জুয়া হলো তরুণ সমাজের নীরব ধ্বংসদূত; এর বিরুদ্ধে পরিবার থেকেই সচেতনতা গড়তে হবে।"',
-            '⚽ "মাদকের করাল গ্রাস থেকে প্রজন্মকে রক্ষা করতে খেলাধুলা ও সুস্থ বিনোদনের কোনো বিকল্প নেই।"',
-            '🌟 "মাদককে না বলুন, জুয়াকে বয়কট করুন; নৈতিকতায় গড়ি সমাজ, সমৃদ্ধ দেশ আমাদের অর্জন।"'
+
+            "🌿 ভালো থাকার পথ শুরু হয় একটি ভালো সিদ্ধান্ত থেকে।",
+
+            "💙 কঠিন সময় স্থায়ী নয়; তাই আশা ছেড়ে দেবেন না।",
+
+            "🌱 ছোট একটি ভালো অভ্যাসও ভবিষ্যতে বড় পরিবর্তন আনতে পারে।",
+
+            "🤝 কাউকে সাহায্য করতে না পারলেও তাকে কষ্ট দেবেন না।",
+
+            "🚫 মাদক থেকে দূরে থাকুন, নিজের ভবিষ্যৎকে নিরাপদ রাখুন।",
+
+            "🎯 বেটিংকে আয়ের পথ নয়, ঝুঁকি হিসেবে দেখুন।",
+
+            "📚 প্রতিদিন একটু শেখা ভবিষ্যতের জন্য বড় বিনিয়োগ।",
+
+            "❤️ পরিবারের সাথে সুন্দরভাবে কথা বলুন।",
+
+            "🌙 আল্লাহর স্মরণে অন্তর প্রশান্ত হয়। — সূরা আর-রাদ ১৩:২৮",
+
+            "🌸 ভুল হয়ে গেলে ফিরে আসুন; ভালো হওয়ার দরজা বন্ধ নয়।",
+
+            "💪 নিজের রাগ নিয়ন্ত্রণ করতে পারা একটি বড় শক্তি।",
+
+            "✨ আজকের ছোট ভালো সিদ্ধান্ত আগামী দিনের বড় পরিবর্তন হতে পারে।",
+
+            "🕊️ মন খারাপ হলে একা সবকিছু সহ্য করবেন না; বিশ্বস্ত মানুষের সাথে কথা বলুন।",
+
+            "🌍 সুন্দর সমাজ শুরু হয় একজন মানুষের ভালো আচরণ থেকে।",
+
+            "❤️ আপনার জীবন মূল্যবান।"
+
         ];
 
-        // Function to change quote randomly with smooth effect
+
         function changeQuote() {
-            quoteBanner.style.opacity = 0;
+
+            quoteBanner.style.opacity =
+                "0";
+
             setTimeout(() => {
-                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-                quoteBanner.innerText = randomQuote;
-                quoteBanner.style.opacity = 1;
+
+                const randomQuote =
+                    quotes[
+                        Math.floor(
+                            Math.random()
+                            * quotes.length
+                        )
+                    ];
+
+                quoteBanner.innerText =
+                    randomQuote;
+
+                quoteBanner.style.opacity =
+                    "1";
+
             }, 300);
+
         }
+
 
         changeQuote();
-        setInterval(changeQuote, 3000);
 
-        chatForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const message = userInput.value.trim();
-            if (!message) return;
+        setInterval(
+            changeQuote,
+            5000
+        );
 
-            addMessage(message, 'user-message');
-            userInput.value = '';
 
-            typingIndicator.style.display = 'block';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+        /* -----------------------------------------
+           ADD MESSAGE
+        ----------------------------------------- */
+
+        function addMessage(
+            text,
+            className
+        ) {
+
+            const messageDiv =
+                document.createElement("div");
+
+            messageDiv.classList.add(
+                "message",
+                className
+            );
+
+            if (className === "bot-message") {
+
+                messageDiv.innerHTML = `
+                    <div class="bot-label">
+                        🤖 মরমী
+                    </div>
+                    ${escapeHtml(text)}
+                `;
+
+            } else {
+
+                messageDiv.innerText =
+                    text;
+            }
+
+            chatMessages.insertBefore(
+                messageDiv,
+                typingIndicator
+            );
+
+            chatMessages.scrollTop =
+                chatMessages.scrollHeight;
+        }
+
+
+        /* -----------------------------------------
+           CHAT HISTORY
+        ----------------------------------------- */
+
+        function saveChatMessage(
+            text,
+            type
+        ) {
 
             try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message, userName }) // Backend এ নামসহ পাঠানো যাবে
+
+                const history =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "moromi_chat_history"
+                        ) || "[]"
+                    );
+
+                history.push({
+
+                    text: text,
+
+                    type: type,
+
+                    time: Date.now()
+
                 });
 
-                const data = await response.json();
-                typingIndicator.style.display = 'none';
+                /* সর্বোচ্চ 100টি মেসেজ */
 
-                if (response.ok && data.reply) {
-                    addMessage(data.reply, 'bot-message');
-                } else {
-                    addMessage(data.error || 'দুঃখিত, কোনো একটি সমস্যা হয়েছে। কিছুক্ষণ পর আবার চেষ্টা করুন।', 'bot-message');
+                if (history.length > 100) {
+
+                    history.splice(
+                        0,
+                        history.length - 100
+                    );
+
                 }
-            } catch (error) {
-                typingIndicator.style.display = 'none';
-                addMessage('নেটওয়ার্ক ত্রুটি! অনুগ্রহ করে আপনার ইন্টারনেট কানেকশন চেক করুন।', 'bot-message');
-            }
-        });
 
-        function addMessage(text, className) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', className);
-            messageDiv.innerText = text;
-            chatMessages.insertBefore(messageDiv, typingIndicator);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+                localStorage.setItem(
+                    "moromi_chat_history",
+                    JSON.stringify(history)
+                );
+
+            } catch (error) {
+
+                console.log(
+                    "History save error:",
+                    error
+                );
+
+            }
+
         }
-    </script>
-<script>
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker.register("/sw.js")
-                    .then(() => console.log("Moromi Service Worker registered"))
-                    .catch((error) => console.error("Moromi Service Worker error:", error));
+
+
+        /* -----------------------------------------
+           SEND MESSAGE
+        ----------------------------------------- */
+
+        chatForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+                const message =
+                    userInput.value.trim();
+
+                if (!message) return;
+
+
+                /* User message */
+
+                addMessage(
+                    message,
+                    "user-message"
+                );
+
+                saveChatMessage(
+                    message,
+                    "user"
+                );
+
+                userInput.value = "";
+
+                sendBtn.disabled = true;
+
+                typingIndicator.style.display =
+                    "block";
+
+                chatMessages.scrollTop =
+                    chatMessages.scrollHeight;
+
+
+                try {
+
+                    /*
+                     * Moromi backend
+                     *
+                     * এখানে /api/chat
+                     * আপনার GitHub-এর
+                     * api/chat.js ব্যবহার করবে।
+                     *
+                     * OpenAI/Gemini লাগবে না।
+                     */
+
+                    const response =
+                        await fetch(
+                            "/api/chat",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+                                        message:
+                                            message,
+
+                                        userName:
+                                            userName
+                                    })
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    typingIndicator.style.display =
+                        "none";
+
+
+                    if (
+                        response.ok &&
+                        data.reply
+                    ) {
+
+                        addMessage(
+                            data.reply,
+                            "bot-message"
+                        );
+
+                        saveChatMessage(
+                            data.reply,
+                            "bot"
+                        );
+
+                    } else {
+
+                        addMessage(
+                            data.error ||
+                            "দুঃখিত, এখন উত্তর দিতে সমস্যা হচ্ছে।",
+                            "bot-message"
+                        );
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "Moromi error:",
+                        error
+                    );
+
+                    typingIndicator.style.display =
+                        "none";
+
+
+                    addMessage(
+                        "মরমীর সাথে সংযোগ করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+                        "bot-message"
+                    );
+
+                }
+
+
+                sendBtn.disabled = false;
+
+                userInput.focus();
+
+            }
+        );
+
+
+        /* -----------------------------------------
+           QUICK QUESTIONS
+        ----------------------------------------- */
+
+        document
+            .querySelectorAll(".quick-btn")
+            .forEach(function(button) {
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        userInput.value =
+                            button.dataset.question;
+
+                        userInput.focus();
+
+                    }
+                );
+
             });
+
+
+        /* -----------------------------------------
+           SERVICE WORKER / PWA
+        ----------------------------------------- */
+
+        if (
+            "serviceWorker"
+            in navigator
+        ) {
+
+            window.addEventListener(
+                "load",
+                function() {
+
+                    navigator.serviceWorker
+                        .register("/sw.js")
+                        .then(function() {
+
+                            console.log(
+                                "Moromi Service Worker registered."
+                            );
+
+                        })
+                        .catch(function(error) {
+
+                            console.log(
+                                "Service Worker error:",
+                                error
+                            );
+
+                        });
+
+                }
+            );
+
         }
+
     </script>
+
 </body>
 </html>
