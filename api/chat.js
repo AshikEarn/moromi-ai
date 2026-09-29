@@ -1,6 +1,8 @@
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({
+      error: "Method not allowed"
+    });
   }
 
   const { message, userName } = req.body;
@@ -12,6 +14,13 @@ export default async function handler(req, res) {
     });
   }
 
+  // মেসেজ না থাকলে
+  if (!message || !message.trim()) {
+    return res.status(400).json({
+      error: "Message is required."
+    });
+  }
+
   // অফলাইন ব্যাকআপ উপদেশ
   const fallbackAdviceList = [
     "মন খারাপ বা দুশ্চিন্তা হলে একটু পানি পান করুন এবং কিছুক্ষণ শান্তভাবে বসুন। এখন আপনার মনের অনুভূতিটি কেমন?",
@@ -20,7 +29,7 @@ export default async function handler(req, res) {
     "যেকোনো কঠিন পরিস্থিতিতে শান্ত থাকার চেষ্টা করুন। আমাকে বলতে পারেন, আপনি ঠিক কোন বিষয়ে সাহায্য চাইছেন?"
   ];
 
-  // র্যান্ডমলি একটি ব্যাকআপ উত্তর
+  // র্যান্ডম ব্যাকআপ উত্তর
   const randomFallbackAdvice =
     fallbackAdviceList[
       Math.floor(Math.random() * fallbackAdviceList.length)
@@ -38,7 +47,7 @@ export default async function handler(req, res) {
         },
 
         body: JSON.stringify({
-          model: "gpt-5.6-mini",
+          model: "gpt-5-mini",
 
           instructions: `
 You are Moromi (মরমী), a warm and supportive AI companion.
@@ -48,12 +57,16 @@ Rules:
 - Understand Bangla, Banglish, and English.
 - If the user writes Banglish, understand it and reply naturally in Bangla.
 - If the user writes English, reply in English.
+- If the user writes Bangla, reply naturally in Bangla.
 - Keep replies simple, friendly, natural and helpful.
 - If the user is sad, worried, lonely or stressed, respond with empathy and practical support.
 - Do not make every conversation about mental health.
 - Do not pretend to replace family, friends, doctors or mental-health professionals.
 - Answer normal questions normally.
 - Avoid unnecessarily long replies.
+- Do not claim to be human.
+- Do not say that you are always physically present.
+- Be respectful and supportive.
 ${userName ? `The user's name is ${userName}.` : ""}
           `,
 
@@ -64,24 +77,28 @@ ${userName ? `The user's name is ${userName}.` : ""}
 
     const data = await response.json();
 
+    // OpenAI API থেকে কোনো error এলে
     if (!response.ok) {
       console.error("OpenAI API error:", data);
 
-      return res.status(response.status).json({
-        error: data.error?.message || "OpenAI API error"
+      return res.status(200).json({
+        reply: randomFallbackAdvice
       });
     }
 
+    // AI-এর উত্তর
+    const reply =
+      data.output_text ||
+      randomFallbackAdvice;
+
     return res.status(200).json({
-      reply:
-        data.output_text ||
-        randomFallbackAdvice
+      reply: reply
     });
 
   } catch (error) {
     console.error("Moromi server error:", error);
 
-    // API/server সমস্যা হলে ব্যাকআপ উত্তর
+    // Server/API সমস্যা হলে
     return res.status(200).json({
       reply: randomFallbackAdvice
     });
