@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>মরমী (Moromi) - মানসিক প্রশান্তি ও আত্মিক অনুভূতি</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#6c63ff">
 
     <!-- Open Graph Meta Tags for Social Sharing -->
     <meta property="og:title" content="মরমী (Moromi) - AI Companion">
@@ -450,6 +452,15 @@
             messageDiv.innerText = text;
             chatMessages.insertBefore(messageDiv, typingIndicator);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+<script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("/sw.js")
+                    .then(() => console.log("Moromi Service Worker registered"))
+                    .catch((error) => console.error("Moromi Service Worker error:", error));
+            });
         }
     </script>
 </body>
