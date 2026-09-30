@@ -165,13 +165,13 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             background: #f8fafc;
             scroll-behavior: smooth;
         }
 
         .message {
-            max-width: 84%;
+            max-width: 88%;
             padding: 11px 14px;
             border-radius: 18px;
             font-size: 14px;
@@ -201,6 +201,8 @@
             border: 1px solid #e5e7eb;
             border-bottom-left-radius: 5px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            position: relative;
+            padding-bottom: 30px; /* Space for copy button */
         }
 
         .bot-label {
@@ -221,6 +223,30 @@
             border: 1px solid #ddd6fe;
             box-shadow: 0 1px 4px rgba(0,0,0,0.15);
             flex-shrink: 0;
+        }
+
+        /* COPY BUTTON */
+        .copy-btn {
+            position: absolute;
+            bottom: 8px;
+            right: 12px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            color: #4b5563;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #e0e7ff;
+            color: #4338ca;
+            border-color: #c7d2fe;
         }
 
         .typing-indicator {
@@ -430,6 +456,7 @@
                     <span>মরমী</span>
                 </div>
                 আসসালামু আলাইকুম! 🌸<br>আমি মরমী—একটি ফ্রি অফলাইন মানবিক সহায়ক। আপনি আপনার প্রশ্ন, চিন্তা বা জীবনের যেকোনো সমস্যা নিয়ে কথা বলতে পারেন।
+                <button class="copy-btn" onclick="copyBotMessage(this)">📋 কপি</button>
             </div>
             <div class="typing-indicator" id="typingIndicator">
                 মরমী খুঁজছে...
@@ -438,11 +465,12 @@
 
         <!-- QUICK QUESTIONS -->
         <div class="quick-area">
+            <button class="quick-btn" data-question="আমি নেশায় আসক্ত কি করণীয়?">🚬 নেশা মুক্তি</button>
+            <button class="quick-btn" data-question="আমি জুয়ায় আসক্ত কি করণীয়?">🎯 জুয়া মুক্তি</button>
+            <button class="quick-btn" data-question="আমি ৫ ওয়াক্ত নামাজ পড়তে চাই">🌙 নামাজ</button>
+            <button class="quick-btn" data-question="টাকা জমানোর উপায় কী?">💰 টাকা জমানো</button>
             <button class="quick-btn" data-question="আমার মন খারাপ, কী করতে পারি?">😔 মন খারাপ</button>
-            <button class="quick-btn" data-question="মাদক থেকে কীভাবে দূরে থাকব?">🚫 মাদক</button>
-            <button class="quick-btn" data-question="বেটিং বা জুয়া কীভাবে ছাড়ব?">🎯 বেটিং</button>
-            <button class="quick-btn" data-question="আল্লাহর কাছে ফিরে আসতে চাই, কী করব?">🌙 ইসলাম</button>
-            <button class="quick-btn" data-question="জীবনে ভালো কিছু করতে চাই, কোথা থেকে শুরু করব?">🌱 জীবন</button>
+            <button class="quick-btn" data-question="রাগের সময় কী করা উচিত?">🌿 রাগ নিয়ন্ত্রণ</button>
         </div>
 
         <!-- INPUT -->
@@ -495,7 +523,7 @@
 
         function updateGreetingAndWelcome() {
             userGreeting.innerText = `👤 ${userName}`;
-            welcomeMessage.innerHTML = `<div class="bot-label"><img src="/logo.png" alt="মরমী"><span>মরমী</span></div>আসসালামু আলাইকুম ${userName}! 🌸<br>আমি মরমী—আপনার অফলাইন মানবিক সহায়ক। বলুন, আজ আপনাকে কীভাবে সাহায্য করতে পারি?`;
+            welcomeMessage.innerHTML = `<div class="bot-label"><img src="/logo.png" alt="মরমী"><span>মরমী</span></div>আসসালামু আলাইকুম ${userName}! 🌸<br>আমি মরমী—আপনার অফলাইন মানবিক সহায়ক। বলুন, আজ আপনাকে কীভাবে সাহায্য করতে পারি?<button class="copy-btn" onclick="copyBotMessage(this)">📋 কপি</button>`;
         }
 
         userGreeting.addEventListener('click', () => {
@@ -523,35 +551,43 @@
         changeQuote();
         setInterval(changeQuote, 4000);
 
-        // ================= OFFLINE KNOWLEDGE BASE (প্রশ্ন ও উত্তর ডেটাবেজ) =================
+        // ================= OFFLINE KNOWLEDGE BASE =================
         const knowledgeBase = [
+            {
+                keywords: ["নেশায় আসক্ত", "নেশা ছাড়তে", "মাদক ছাড়তে", "মাদকে আসক্ত", "نشہ", "drug", "নেশা", "সিগারেট", "গাঁজা", "ইয়াবা"],
+                answer: "আপনি যে এই সত্যটি স্বীকার করেছেন এবং মুক্ত হতে চাচ্ছেন, এটিই আপনার জীবনের সবচেয়ে বড় ও সাহসি প্রথম পদক্ষেপ। নেশা থেকে মুক্ত হতে হলে:\n১. খারাপ সঙ্গ ও পুরোনো পরিবেশ থেকে একদম দূরে সরে যান।\n২. পরিবার বা বিশ্বস্ত কারো সাহায্য নিন, প্রয়োজনে রিহ্যাব সেন্টারের সহায়তা নিন।\n৩. প্রতিদিন শরীরচর্চা করুন এবং মনকে অন্য কোনো ভালো কাজে ব্যস্ত রাখুন। আল্লাহ আপনাকে অবশ্যই শক্তি দেবেন, বিশ্বাস রাখুন।"
+            },
+            {
+                keywords: ["জুয়ায় আসক্ত", "জুয়া ছাড়তে", "বেটিং আসক্ত", "জুয়ার নেশা", "বেটিং", "জুয়া", "gambling", "bet", "লটারি"],
+                answer: "অনলাইন জুয়া বা বেটিং হলো তুষের আগুন, যা আস্তে আস্তে সব শেষ করে দেয়। জুয়া থেকে বাঁচার উপায়:\n১. প্রথমে আপনার মোবাইল থেকে সমস্ত বেটিং অ্যাপ বা লিংক আনইনস্টল করে দিন।\n২. টাকার হিসাব অন্য কারো কাছে রাখুন বা এমন কারো নজরদারিতে থাকুন যে আপনাকে আটকে রাখবে।\n৩. মাথায় রাখবেন, জুয়ায় হেরে যাওয়া টাকা কোনোদিন জুয়া খেলে ফিরিয়ে আনা যায় না। কঠোর হোন, তওবা করে ফিরে আসুন।"
+            },
+            {
+                keywords: ["নামাজ পড়তে চাই", "নামাজ পড়তে চাই", "৫ ওয়াক্ত নামাজ", "পাঁচ ওয়াক্ত নামাজ", "আল্লাহ", "ইসলাম", "নামাজ", "ধর্ম", "কোরআন", "দোয়া", "তওবা", "ফিরে আসতে চাই"],
+                answer: "মাশাআল্লাহ! আপনার এই নিয়তটি মহান আল্লাহর কাছে অনেক পছন্দ হয়েছে। ৫ ওয়াক্ত নামাজ নিয়মিত শুরু করার ছোট কিছু টিপস:\n১. আজ থেকেই আজান দেওয়ার সাথে সাথে সব কাজ ফেলে অজু করে নিন।\n২. একা একা শুরু করতে সমস্যা হলে কাছের মসজিদে গিয়ে জামাতে পড়ার অভ্যাস করুন।\n৩. নিয়ত করুন যে দুনিয়ার যেকোনো ব্যস্ততাই আসুক, নামাজের সময় নামাজই আগে পড়বেন। আল্লাহ আপনার জন্য পথ সহজ করে দেবেন।"
+            },
+            {
+                keywords: ["টাকা জমে", "টাকা জমানোর", "সঞ্চয়", "টাকা জমাবো", "টাকা জমানোর উপায়"],
+                answer: "টাকা জমানোর সবচেয়ে কার্যকরী নিয়ম হলো '50/30/20 রুল' বা আগে সেভিংস করা।\n১. হাত বা পকেটে টাকা আসা মাত্রই সেখান থেকে নির্দিষ্ট কিছু অংশ (যেমন ১০% বা ২০%) আলাদা করে জমিয়ে ফেলুন, বাকিটা খরচ করুন।\n২. অপ্রয়োজনীয় কেনাকাটা বা শৌখিন খরচ কমিয়ে দিন।\n৩. ছোট ছোট সঞ্চয় থেকেই বড় পুঁজি তৈরি হয়। ধৈর্য ধরে আজ থেকেই একটি গোল সেট করুন!"
+            },
             {
                 keywords: ["মন খারাপ", "দুঃখ", "কষ্ট", "কান্না", "বিষণ্ণ", "depression", "sad"],
                 answer: "মন খারাপ বা দুশ্চিন্তা হলে এক গ্লাস ঠাণ্ডা পানি খেয়ে একটু দীর্ঘশ্বাস নিন। মনে রাখবেন, আল্লাহ তাআলা কোনো বান্দাকে তার সাধ্যের বাইরে কষ্ট দেন না (সূরা বাকারা: ২৮৬)। প্রিয় নবী (সা:) বলেছেন, ইস্তিগফার বা বেশি বেশি 'আস্তাগফিরুল্লাহ' পাঠ করলে আল্লাহ সকল দুশ্চিন্তা থেকে মুক্তির পথ করে দেন।"
             },
             {
-                keywords: ["মাদক", "نشہ", "drug", "নেশা", "সিগারেট", "গাঁজা", "ইয়াবা", "মদের"],
-                answer: "মাদক মানুষের জীবন, পরিবার এবং ভবিষ্যৎ পুরোপুরি ধ্বংস করে দেয়। ইসলামে মাদক হারাম এবং এটি স্বাস্থ্যের জন্য মারাত্মক ক্ষতিকর। আপনি যদি মাদককে না বলতে চান, তবে নেশাগ্রস্ত বন্ধুদের সঙ্গ ত্যাগ করুন, ভালো কোনো খেলাধুলা বা সৃজনশীল কাজে মন দিন। আপনার জীবন আল্লাহর দেওয়া অমূল্য আমানত, একে ধ্বংস করবেন না।"
-            },
-            {
-                keywords: ["বেটিং", "জুয়া", "gambling", "bet", "লটারি", "online bet"],
-                answer: "অনলাইন জুয়া ও বেটিং হলো সর্বনাশা জুয়া, যা অল্প সময়ে মানুষকে নিঃস্ব করে দেয়। এটি সাময়িক উত্তেজনার লোভ দেখালেও শেষে সর্বস্বান্ত করে ছাড়ে। জুয়া থেকে দূরে থাকুন, নিজের ঘাম ঝরানো হালাল উপার্জনের ওপর ভরসা রাখুন। আল্লাহ হালাল রিজিককে বরকতময় করেছেন।"
-            },
-            {
-                keywords: ["আল্লাহ", "ইসলাম", "নামাজ", "ধর্ম", "কোরআন", "দোয়া", "তওবা", "ফিরে আসতে চাই"],
-                answer: "আল্লাহ অত্যন্ত দয়ালু ও ক্ষমাশীল। বান্দা যতই বড় পাপ করুক না কেন, সে যদি তওবা করে ফিরে আসে, আল্লাহ তাকে ক্ষমা করেন। আজই নিয়মিত পাঁচ ওয়াক্ত নামাজ পড়ার নিয়ত করুন, কুরআন তিলাওয়াত করুন এবং বেশি বেশি দোয়া করুন। ইনশাআল্লাহ আপনার অন্তরে প্রশান্তি নেমে আসবে।"
+                keywords: ["রাগ", "ঝগড়া", "ঝগড়া", "সম্পর্ক", "ভালোবাসা", "প্রেম", "ক্ষমা", "love", "relationship"],
+                answer: "রাগের সময় সিদ্ধান্ত না নেওয়াই ভালো। 🌿 কিছুক্ষণ বিরতি নিন, শান্ত হন এবং পরে সমস্যাটা নিয়ে কথা বলুন। কাউকে হারানোর জন্য নয়, সমস্যা সমাধানের জন্য কথা বলুন। ভুল হলে নিজের ভুল স্বীকার করাও সম্পর্ককে সুন্দর করার একটি শক্তি।"
             },
             {
                 keywords: ["জীবন", "সাফল্য", "লক্ষ্য", "কীভাবে শুরু করব", "ভালো কিছু"],
                 answer: "জীবনে ভালো কিছু করতে চাইলে প্রথমে নিজের খারাপ অভ্যাসগুলো বাদ দিন এবং প্রতিদিন সকালে একটি ভালো কাজ করার লক্ষ্য নিন। সময়ের সদ্ব্যবহার করুন, মা-বাবার সেবা করুন এবং সৎ পথে কঠোর পরিশ্রম করুন। সফলতা একদিন আসবেই ইনশাআল্লাহ।"
             },
             {
-                keywords: ["سلام", "সালাম", "হ্যালো", "হাই", "Kemon acho", "কেমন আছ"],
+                keywords: ["سلام", "সালাম", "হ্যালো", "হাই", "Kemon acho", "কেমন আছ", "hey", "hello"],
                 answer: "ওয়ালাইকুমুস সালাম ওয়া রাহমাতুল্লাহ! 🌸 আলহামদুলিল্লাহ আমি ভালো আছি। আপনার দিনটি কেমন কাটছে বলুন?"
             },
             {
-                keywords: ["তোমার নাম কী", "কে তুমি", "परिचय"],
-                answer: "আমার নাম 'মরমী'। আমি মানুষের মানসিক প্রশান্তি ও নৈতিক সচেতনতা বৃদ্ধির জন্য তৈরি একটি ফ্রি অফলাইন সহায়ক বট।"
+                keywords: ["তোমার নাম কী", "ke tumi", "কে তুমি"],
+                answer: "আমার নাম 'মরমী'। আমি মানুষের মানসিক প্রশান্তি, আসক্তি মুক্তি ও নৈতিক সচেতনতা বৃদ্ধির জন্য তৈরি একটি ফ্রি অফলাইন সহায়ক বট।"
             }
         ];
 
@@ -567,7 +603,6 @@
                 }
             }
 
-            // যদি কোনো নির্দিষ্ট কিওয়ার্ড না মিলে, তবে রেন্ডম সাধারণ সুন্দর উত্তর দেবে
             const defaults = [
                 "আপনার কথাটি বুঝতে পেরেছি। জীবন সবসময় সহজ হয় না, তবে ধৈর্য ও বিশ্বাসের সাথে সামনে এগিয়ে গেলে ইনশাআল্লাহ সব ঠিক হয়ে যাবে। অন্য কোনো বিষয়ে কি সাহায্য লাগবে?",
                 "সুন্দর একটি কথা বলেছেন। যেকোনো পরিস্থিতিতে নিজের মানসিক শান্তি বজায় রাখা এবং ইতিবাচক চিন্তা করা খুবই জরুরি। বলুন, আর কী নিয়ে কথা বলতে চান?",
@@ -582,15 +617,12 @@
             const message = userInput.value.trim();
             if (!message) return;
 
-            // Add User Message
             addMessage(message, 'user-message');
             userInput.value = '';
 
-            // Show Typing Indicator
             typingIndicator.style.display = 'block';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Simulate small realistic delay (0.6 seconds)
             setTimeout(() => {
                 typingIndicator.style.display = 'none';
                 const botReply = findOfflineAnswer(message);
@@ -625,10 +657,36 @@
                     <span>মরমী</span>
                 </div>
                 ${text}
+                <button class="copy-btn" onclick="copyBotMessage(this)">📋 কপি</button>
             `;
             
             chatMessages.insertBefore(messageDiv, typingIndicator);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Copy Function
+        function copyBotMessage(button) {
+            // Get the text content of the message container, excluding the label and button text
+            const messageBox = button.closest('.bot-message');
+            // Clone the box to safely extract text without altering UI
+            const clone = messageBox.cloneNode(true);
+            
+            // Remove bot-label and copy-btn from the cloned element text extraction
+            const label = clone.querySelector('.bot-label');
+            const btn = clone.querySelector('.copy-btn');
+            if (label) label.remove();
+            if (btn) btn.remove();
+
+            const textToCopy = clone.innerText.trim();
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                button.innerText = "✅ কপি হয়েছে";
+                setTimeout(() => {
+                    button.innerText = "📋 কপি";
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
         }
     </script>
 </body>
